@@ -1,5 +1,5 @@
-__pycache__/**
-.idea/**
-Drafts/**
-.ipynb_checkpoints/**
-
+__pycache__/
+.idea/
+Drafts/
+.ipynb_checkpoints/
+/Graphs/Strongly_Connected_Components/Test.ipynb
