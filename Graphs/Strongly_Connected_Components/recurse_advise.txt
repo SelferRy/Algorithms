@@ -1,0 +1,13 @@
+import sys, threading
+sys.setrecursionlimit(800000)
+threading.stack_size(67108864)
+def main():
+
+'''
+
+YOUR CODE HERE
+
+'''
+
+thread = threading.Thread(target=main)
+thread.start()
