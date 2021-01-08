@@ -110,9 +110,15 @@ if __name__ == "__main__":
 
     input_files = filter_files("./test_cases")
     test_cases_dir = "./test_cases/"
-    test = test_cases_dir + input_files[0]
+    # test = test_cases_dir + input_files[0]
     # test = "./test_cases/input_mostlyCycles_1_8.txt"
-    G_test = Graph(test)
-    rev_G_test = Graph(test, reverse=True)
-    SCC = kosaraju(G_test, rev_G_test)
+    # G_test = Graph(test)
+    # rev_G_test = Graph(test, reverse=True)
+    # SCC_test = kosaraju(G_test, rev_G_test)
+    # print(SCC_test)
+
+    task = "./data_SCC.txt"
+    G = Graph(task)
+    rev_G = Graph(task, reverse=True)
+    SCC = kosaraju(G, rev_G)
     print(SCC)
