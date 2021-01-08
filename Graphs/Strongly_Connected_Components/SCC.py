@@ -17,6 +17,9 @@ class Graph:
         else:
             self.edges = [list(map(int, line.split())) for line in io.open(data_edges).readlines()]
         self.graph_size = np.max(self.edges)
+        # =====================================
+        self.vertices = self.vertices()
+        # =====================================
         self._explored = {v: False for v in [*self.vertices]}
         self.t = 0  # time
         self.f = deque()  # finishing time
@@ -35,7 +38,7 @@ class Graph:
         self._empty_vert = {v: [] for v in range(1, self.graph_size + 1)}  #
         return self._empty_vert
 
-    @property
+    # @property
     def vertices(self):
         self._vertices = self.empty_vert.copy()
         if self.reverse:
@@ -108,10 +111,10 @@ if __name__ == "__main__":
     # ==================== Test cases =====================
     from get_tests import filter_files
 
-    input_files = filter_files("./test_cases")
-    test_cases_dir = "./test_cases/"
+    # input_files = filter_files("./test_cases")
+    # test_cases_dir = "./test_cases/"
     # test = test_cases_dir + input_files[0]
-    # test = "./test_cases/input_mostlyCycles_1_8.txt"
+    # # test = "./test_cases/input_mostlyCycles_1_8.txt"
     # G_test = Graph(test)
     # rev_G_test = Graph(test, reverse=True)
     # SCC_test = kosaraju(G_test, rev_G_test)
