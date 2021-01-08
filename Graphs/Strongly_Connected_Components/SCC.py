@@ -23,7 +23,7 @@ class Graph:
         self.s = None
         self._leaders = {}  # self.empty_vert.copy()
         # self.counter = {}
-        self.start_order = [n for n in range(self.graph_size, 1, -1)]
+        self.start_order = [n for n in range(self.graph_size, 0, -1)]
 
     # @property
     # def graph_size(self):
@@ -80,7 +80,7 @@ class Graph:
 def kosaraju(rev_graph, graph):
     dfs_loop(rev_graph, stack=graph.start_order)
     graph.f = rev_graph.f  # pass finishing time from reverse_graph to graph
-    dfs_loop(graph, stack=graph.f)
+    dfs_loop(graph, stack=tuple(graph.f))
     return graph.leader_calc
 
 
@@ -95,7 +95,7 @@ def dfs_loop(graph, stack):
 
 def dfs(graph, i):
     graph.explored = (i, True)  # mark as explored the vertex
-    graph.leaders = (graph.s, i)  # collect vertex in leader[s]-list
+    graph.leader = (graph.s, i)  # collect vertex in leader[s]-list
     for j in graph.vertices[i]: # graph.edges:  # for each arc in (i,j) in G
         if not graph.explored[j]:
             dfs(graph, j)
@@ -110,8 +110,9 @@ if __name__ == "__main__":
 
     input_files = filter_files("./test_cases")
     test_cases_dir = "./test_cases/"
-    test1 = test_cases_dir + input_files[0]
-    G_test1 = Graph(test1)
-    rev_G_test1 = Graph(test1, reverse=True)
-    SCC = kosaraju(G_test1, rev_G_test1)
+    test = test_cases_dir + input_files[0]
+    # test = "./test_cases/input_mostlyCycles_1_8.txt"
+    G_test = Graph(test)
+    rev_G_test = Graph(test, reverse=True)
+    SCC = kosaraju(G_test, rev_G_test)
     print(SCC)
