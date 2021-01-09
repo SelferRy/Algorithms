@@ -16,50 +16,60 @@ class Graph:
             self.edges = [list(map(int, line.split())) for line in io.open(data_edges).readlines()]
         else:
             self.edges = [list(map(int, line.split())) for line in io.open(data_edges).readlines()]
-        self.graph_size = np.max(self.edges)
+        # self.graph_size = np.max(self.edges)
         # =====================================
-        self.vertices = self.vertices()
+        self.vertices = self.get_vertices() # self.vertices()
         # =====================================
-        self._explored = {v: False for v in [*self.vertices]}
+        self.sink_vert = set([sink for v, sink in self.edges]) #  if not sink in [*self.vertices]
+        self._explored = {v: False for v in list(set([*self.vertices]).union(self.sink_vert))}
         self.t = 0  # time
         self.f = deque()  # finishing time
         self.s = None
         self._leaders = {}  # self.empty_vert.copy()
         # self.counter = {}
-        self.start_order = [n for n in range(self.graph_size, 0, -1)]
+        self.start_order = [*self.vertices][::-1] # [n for n in [*self.vertices][::-1]]  # assumed vertices in data has sorted order
 
     # @property
     # def graph_size(self):
     #     print("graph_size =", np.max(self.edges))
     #     return np.max(self.edges)
 
-    @property
-    def empty_vert(self):
-        self._empty_vert = {v: [] for v in range(1, self.graph_size + 1)}  #
-        return self._empty_vert
+    # @property
+    # def empty_vert(self):
+    #     self._vertices = {edge[0]:[] for edge in self.edges} # {v: [] for v in range(1, self.graph_size + 1)}  #
+    #     return self._vertices
 
     # @property
-    def vertices(self):
-        self._vertices = self.empty_vert.copy()
-        if self.reverse:
-            for v1, v2 in self.edges:
-                self._vertices[v2].append(v1)
-        else:
-            for v1, v2 in self.edges:
-                self._vertices[v1].append(v2)
+    def get_vertices(self):
+        # self.empty_vert()
+        self._vertices = {edge[0]: [] for edge in self.edges}
+        for v1, v2 in self.edges:
+            self._vertices[v1].append(v2)
         return self._vertices
+        # self._vertices = self.empty_vert.copy()
+        # if self.reverse:
+        #     for v1, v2 in self.edges:
+        #         self._vertices[v2].append(v1)
+        # else:
+        #     for v1, v2 in self.edges:
+        #         self._vertices[v1].append(v2)
+        # return self._vertices
 
     @property
     def explored(self):
         return self._explored
 
     @explored.setter
-    def explored(self, tuple_val):
-        if tuple_val == "reset":
-            self._explored = {v: False for v in [*self.vertices]}
-        else:
-            i, val = tuple_val
-            self._explored[i] = val
+    def explored(self, vertex):
+        self._explored[vertex] = True
+
+    # def explored(self, tuple_val):
+    #     if tuple_val == "reset":
+    #         self._explored = {v: False for v in [*self.vertices]}
+    #     else:
+    #         i, val = tuple_val
+    #         self._explored[i] = val
+
 
     @property
     def leader(self):
@@ -97,18 +107,18 @@ def dfs_loop(graph, stack):
 
 
 def dfs(graph, i):
-    graph.explored = (i, True)  # mark as explored the vertex
+    graph.explored = i # (i, True)  # mark as explored the vertex
     graph.leader = (graph.s, i)  # collect vertex in leader[s]-list
     for j in graph.vertices[i]: # graph.edges:  # for each arc in (i,j) in G
         if not graph.explored[j]:
             dfs(graph, j)
-    graph.t += 1  # increment t
-    graph.f.appendleft(graph.t)  # [n, ..., t, ..., 1] - finishing time stack for second dfs_loop
+    # graph.t += 1  # increment t
+    graph.f.appendleft(i) # .appendleft(graph.t)  # [n, ..., t, ..., 1] - finishing time stack for second dfs_loop
 
 
 # %%
 if __name__ == "__main__":
-    # ==================== Test cases =====================
+    # ==================== Multiple test cases =====================
     from get_tests import filter_files
 
     input_files = filter_files("./test_cases")
