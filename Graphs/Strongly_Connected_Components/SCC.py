@@ -147,28 +147,28 @@ if __name__ == "__main__":
 
     # =================== Single =======================
     # test = test_cases_dir + input_files[0]
-    test = "./test_cases/input_mostlyCycles_6_16.txt"  #input_mostlyCycles_1_8.txt"
-    G_test = Graph(test)
-    rev_G_test = Graph(test, reverse=True)
-    SCC_test = kosaraju(G_test, rev_G_test)
-    print(SCC_test)
+    # test = "./test_cases/input_mostlyCycles_6_16.txt"  #input_mostlyCycles_1_8.txt"
+    # G_test = Graph(test)
+    # rev_G_test = Graph(test, reverse=True)
+    # SCC_test = kosaraju(G_test, rev_G_test)
+    # print(SCC_test)
 
     # ======================== Task ===========================
-    # import sys, threading
-    # sys.setrecursionlimit(800000)
-    # threading.stack_size(67108864)  # 67108864
-    #
-    # task = "./data_SCC.txt"
-    # G = Graph(task)
-    # rev_G = Graph(task, reverse=True)
-    # def main():
-    #
-    #     global G
-    #     global rev_G
-    #     SCC = kosaraju(G, rev_G)
-    #     print(SCC[:5], "This was SCC")
-    #     return G, rev_G, SCC
-    #
-    # # G, rev_G, SCC = main()
-    # thread = threading.Thread(target=main)
-    # thread.start()
+    import sys, threading
+    sys.setrecursionlimit(800000)
+    threading.stack_size(67108864)  # 67108864
+
+    task = "./data_SCC.txt"
+    G = Graph(task)
+    rev_G = Graph(task, reverse=True)
+    def main():
+
+        global G
+        global rev_G
+        SCC = kosaraju(rev_G, G)
+        print(SCC[:5], "This was SCC")
+        return G, rev_G, SCC
+
+    # G, rev_G, SCC = main()
+    thread = threading.Thread(target=main)
+    thread.start()
