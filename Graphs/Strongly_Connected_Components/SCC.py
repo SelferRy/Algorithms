@@ -1,12 +1,7 @@
 # %%
 
 from collections import deque
-import numpy as np
 import io
-
-file = "./data_SCC.txt"
-test_file = "./data_SCC_test.txt"
-
 
 class Graph:
 
@@ -16,55 +11,19 @@ class Graph:
             self.edges = [list(map(int, line.split()))[::-1] for line in io.open(data_edges).readlines()]
         else:
             self.edges = [list(map(int, line.split())) for line in io.open(data_edges).readlines()]
-        # self.graph_size = np.max(self.edges)
-        # =====================================
-        self.vertices = self.get_vertices() # self.vertices()
-        # =====================================
-        # self.sink_vert = set([sink for v, sink in self.edges]) #  if not sink in [*self.vertices]
-        self._explored = {v: False for v in [*self.vertices]} #  list(set([*self.vertices]).union(self.sink_vert))}
-        self.t = 0  # time
-        self.f = deque()  # finishing time
+        self.vertices = self.get_vertices()                   # self.vertices()
+        self._explored = {v: False for v in [*self.vertices]}
+        self.f = deque()                                      # finishing time
         self.s = None
-        self._leaders = {}  # self.empty_vert.copy()
-        # self.counter = {}
-        self.start_order = [*self.vertices][::-1] # [n for n in [*self.vertices][::-1]]  # assumed vertices in data has sorted order
+        self._leaders = {}
+        self.start_order = [*self.vertices][::-1]             # assumed vertices in data has sorted order
 
-    # @property
-    # def graph_size(self):
-    #     print("graph_size =", np.max(self.edges))
-    #     return np.max(self.edges)
-
-    # @property
-    # def empty_vert(self):
-    #     self._vertices = {edge[0]:[] for edge in self.edges} # {v: [] for v in range(1, self.graph_size + 1)}  #
-    #     return self._vertices
-
-    # @property
     def get_vertices(self):
-        # self.empty_vert()
         self._vertices = {edge[0] for edge in self.edges}.union({edge[1] for edge in self.edges})
         self._vertices = {v:[] for v in self._vertices}
-        # self._vertices = {edge[0]: [] for edge in self.edges}
         for v1, v2 in self.edges:
             self._vertices[v1].append(v2)
-        # # sink vertices
-        # for edge[1] in self.edges:
-        #     sink_v = edge[1]
-        #     self._vertices[sink_v] = []
         return self._vertices
-
-    # @property
-    # def vertex(self):
-    #     if
-
-        # self._vertices = self.empty_vert.copy()
-        # if self.reverse:
-        #     for v1, v2 in self.edges:
-        #         self._vertices[v2].append(v1)
-        # else:
-        #     for v1, v2 in self.edges:
-        #         self._vertices[v1].append(v2)
-        # return self._vertices
 
     @property
     def explored(self):
@@ -73,14 +32,6 @@ class Graph:
     @explored.setter
     def explored(self, vertex):
         self._explored[vertex] = True
-
-    # def explored(self, tuple_val):
-    #     if tuple_val == "reset":
-    #         self._explored = {v: False for v in [*self.vertices]}
-    #     else:
-    #         i, val = tuple_val
-    #         self._explored[i] = val
-
 
     @property
     def leader(self):
@@ -103,28 +54,26 @@ class Graph:
 
 def kosaraju(rev_graph, graph):
     dfs_loop(rev_graph, stack=graph.start_order)
-    graph.f = rev_graph.f  # pass finishing time from reverse_graph to graph
+    graph.f = rev_graph.f           # pass finishing time from reverse_graph to graph
     dfs_loop(graph, stack=tuple(graph.f))
     return graph.leader_calc
 
 
 def dfs_loop(graph, stack):
     """ stack must be reverse vertices (n to 1) for first pass and finishing times (n to 1)"""
-    for i in stack:  # start_order (first pass) or f_times (second)
+    for i in stack:                 # start_order (first pass) or f_times (second)
         if not graph.explored[i]:
-            graph.s = i  # get the leader
+            graph.s = i             # get the leader
             dfs(graph, i)
-            # graph.counter[i] = len(graph.leaders[i])    # calc len the leader's list == how big the SCC
 
 
 def dfs(graph, i):
-    graph.explored = i # (i, True)  # mark as explored the vertex
-    graph.leader = (graph.s, i)  # collect vertex in leader[s]-list
-    for j in graph.vertices[i]: # graph.edges:  # for each arc in (i,j) in G
+    graph.explored = i              # mark as explored the vertex
+    graph.leader = (graph.s, i)     # collect vertex in leader[s]-list
+    for j in graph.vertices[i]:     # graph.edges:  # for each arc in (i,j) in G
         if not graph.explored[j]:
             dfs(graph, j)
-    # graph.t += 1  # increment t
-    graph.f.appendleft(i) # .appendleft(graph.t)  # [n, ..., t, ..., 1] - finishing time stack for second dfs_loop
+    graph.f.appendleft(i)           # [n, ..., t, ..., 1] - finishing time stack for second dfs_loop
 
 
 # %%
@@ -169,6 +118,5 @@ if __name__ == "__main__":
         print(SCC[:5], "This was SCC")
         return G, rev_G, SCC
 
-    # G, rev_G, SCC = main()
     thread = threading.Thread(target=main)
     thread.start()
