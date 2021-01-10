@@ -5,7 +5,7 @@ import numpy as np
 import io
 
 file = "./data_SCC.txt"
-test_file = "./data_SCC_test.txt"
+test_file = "Drafts/data_SCC_test.txt"
 
 
 class Graph:
