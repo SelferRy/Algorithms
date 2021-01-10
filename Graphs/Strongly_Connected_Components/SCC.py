@@ -13,15 +13,15 @@ class Graph:
     def __init__(self, data_edges, reverse=False):
         self.reverse = reverse
         if reverse:
-            self.edges = [list(map(int, line.split())) for line in io.open(data_edges).readlines()]
+            self.edges = [list(map(int, line.split()))[::-1] for line in io.open(data_edges).readlines()]
         else:
             self.edges = [list(map(int, line.split())) for line in io.open(data_edges).readlines()]
         # self.graph_size = np.max(self.edges)
         # =====================================
         self.vertices = self.get_vertices() # self.vertices()
         # =====================================
-        self.sink_vert = set([sink for v, sink in self.edges]) #  if not sink in [*self.vertices]
-        self._explored = {v: False for v in list(set([*self.vertices]).union(self.sink_vert))}
+        # self.sink_vert = set([sink for v, sink in self.edges]) #  if not sink in [*self.vertices]
+        self._explored = {v: False for v in [*self.vertices]} #  list(set([*self.vertices]).union(self.sink_vert))}
         self.t = 0  # time
         self.f = deque()  # finishing time
         self.s = None
@@ -42,10 +42,21 @@ class Graph:
     # @property
     def get_vertices(self):
         # self.empty_vert()
-        self._vertices = {edge[0]: [] for edge in self.edges}
+        self._vertices = {edge[0] for edge in self.edges}.union({edge[1] for edge in self.edges})
+        self._vertices = {v:[] for v in self._vertices}
+        # self._vertices = {edge[0]: [] for edge in self.edges}
         for v1, v2 in self.edges:
             self._vertices[v1].append(v2)
+        # # sink vertices
+        # for edge[1] in self.edges:
+        #     sink_v = edge[1]
+        #     self._vertices[sink_v] = []
         return self._vertices
+
+    # @property
+    # def vertex(self):
+    #     if
+
         # self._vertices = self.empty_vert.copy()
         # if self.reverse:
         #     for v1, v2 in self.edges:
@@ -85,7 +96,7 @@ class Graph:
     @property
     def leader_calc(self):
         self.counter = sorted([len(val) for val in self._leaders.values()], reverse=True)
-        # print("Count leaders:", self.counter)
+        # print("Count leaders:", self.counter[:5])
         return self.counter
 
 # %%
@@ -119,28 +130,28 @@ def dfs(graph, i):
 # %%
 if __name__ == "__main__":
     # ==================== Multiple test cases =====================
-    from get_tests import filter_files
-
-    input_files = filter_files("./test_cases")
-    test_cases_dir = "./test_cases/"
-    test_paths = [test_cases_dir + file for file in input_files]
-    cases = {f"{i}," + str(name.split("/")[-1]): name for i, name in enumerate(test_paths)}
-    G = {}
-    rev_G = {}
-    SCC = {}
-    for case in [*cases]:
-        G[case] = Graph(cases[case])
-        rev_G[case] = Graph(cases[case], reverse=True)
-        SCC[case] = kosaraju(G[case], rev_G[case])
-        print(f"SCC[{case}] = ", SCC[case])
+    # from get_tests import filter_files
+    #
+    # input_files = filter_files("./test_cases")
+    # test_cases_dir = "./test_cases/"
+    # test_paths = [test_cases_dir + file for file in input_files]
+    # cases = {f"{i}," + str(name.split("/")[-1]): name for i, name in enumerate(test_paths)}
+    # G = {}
+    # rev_G = {}
+    # SCC = {}
+    # for case in [*cases]:
+    #     G[case] = Graph(cases[case])
+    #     rev_G[case] = Graph(cases[case], reverse=True)
+    #     SCC[case] = kosaraju(rev_G[case], G[case])
+    #     print(f"SCC[{case}] = ", SCC[case])
 
     # =================== Single =======================
     # test = test_cases_dir + input_files[0]
-    # test = "./test_cases/input_mostlyCycles_1_8.txt"
-    # G_test = Graph(test)
-    # rev_G_test = Graph(test, reverse=True)
-    # SCC_test = kosaraju(G_test, rev_G_test)
-    # print(SCC_test)
+    test = "./test_cases/input_mostlyCycles_6_16.txt"  #input_mostlyCycles_1_8.txt"
+    G_test = Graph(test)
+    rev_G_test = Graph(test, reverse=True)
+    SCC_test = kosaraju(G_test, rev_G_test)
+    print(SCC_test)
 
     # ======================== Task ===========================
     # import sys, threading
@@ -155,7 +166,7 @@ if __name__ == "__main__":
     #     global G
     #     global rev_G
     #     SCC = kosaraju(G, rev_G)
-    #     print(SCC, "This was SCC")
+    #     print(SCC[:5], "This was SCC")
     #     return G, rev_G, SCC
     #
     # # G, rev_G, SCC = main()
