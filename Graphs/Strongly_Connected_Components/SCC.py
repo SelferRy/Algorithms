@@ -19,8 +19,7 @@ class Graph:
         self.graph_size = np.max(self.edges)
         self._explored = {v: False for v in range(1, self.graph_size + 1)}
         self.vertices  = self.fill_vertices()
-        # self.t = 0                                # time
-        self.f = deque()                          # finishing time
+        self.f = deque()                          # finishing time stack
         self.s = None
         self._leaders = {}
         self.start_order = [*self.vertices][::-1] # assumed vertices in data has sorted order
@@ -53,20 +52,20 @@ class Graph:
     @property
     def leader_calc(self):
         self.counter = sorted([len(val) for val in self._leaders.values()], reverse=True)
-        # print("Count leaders:", self.counter[:5])
         return self.counter
 
 # %%
 
 def kosaraju(rev_graph, graph):
     dfs_loop(rev_graph, stack=graph.start_order)
-    graph.f = rev_graph.f  # pass finishing time from reverse_graph to graph
+    graph.f = rev_graph.f  # pass finishing-time array from reverse_graph to graph
     dfs_loop(graph, stack=tuple(graph.f))
     return graph.leader_calc
 
 
 def dfs_loop(graph, stack):
-    """ stack must be reverse vertices (n to 1) for first pass and finishing times (n to 1)"""
+    """ Stack must be reverse vertices (n to 1) for first pass and finishing times (n to 1).
+        For second pass stack is f-times array (from last to first). """
     for i in stack:                 # start_order (first pass) or f_times (second)
         if not graph.explored[i]:
             graph.s = i             # get the leader
@@ -79,13 +78,12 @@ def dfs(graph, i):
     for j in graph.vertices[i]:     # for each arc in (i,j) in G
         if not graph.explored[j]:
             dfs(graph, j)
-    # graph.t += 1                  # increment t
-    graph.f.appendleft(i) # .appendleft(graph.t)  # [n, ..., t, ..., 1] - finishing time stack for second dfs_loop
+    graph.f.appendleft(i)           # [n, ..., t, ..., 1] - finishing-time stack for second dfs_loop
 
 
 # %%
 if __name__ == "__main__":
-    # ==================== Multiple test cases =====================
+    # ================= Multiple test cases ==================
     from get_tests import filter_files
 
     input_files = filter_files("./test_cases")
@@ -101,15 +99,15 @@ if __name__ == "__main__":
         SCC[case] = kosaraju(rev_G[case], G[case])
         print(f"SCC[{case}] = ", SCC[case])
 
-    # =================== Single =======================
-    # test = test_cases_dir + input_files[0]
+    # ======================= Single =========================
+    ## test = test_cases_dir + input_files[0]
     # test = "./test_cases/input_mostlyCycles_6_16.txt"  #input_mostlyCycles_1_8.txt"
     # G_test = Graph(test)
     # rev_G_test = Graph(test, reverse=True)
     # SCC_test = kosaraju(G_test, rev_G_test)
     # print(SCC_test)
 
-    # ======================== Task ===========================
+    # ======================== Task ==========================
     # import sys, threading
     # sys.setrecursionlimit(800000)
     # threading.stack_size(67108864)  # 67108864
