@@ -43,7 +43,10 @@ class Graph:
         s, v = s_v
         if not s in self._leaders:
             self._leaders[s] = []
-        self._leaders[s].append(v)
+        if isinstance(v, list):
+            self._leaders[s].extend(v)
+        else:
+            self._leaders[s].append(v)
 
     @property
     def leader_calc(self):
@@ -69,31 +72,53 @@ def dfs_loop(graph, stack):
 
 
 def dfs(graph, i):
-    graph.explored = i              # mark as explored the vertex
-    graph.leader = (graph.s, i)     # collect vertex in leader[s]-list
-    for j in graph.vertices[i]:     # for each arc in (i,j) in G
-        if not graph.explored[j]:
-            dfs(graph, j)
-    graph.f.appendleft(i)           # [n, ..., t, ..., 1] - finishing-time stack for second dfs_loop
+    prev_size = float('inf')
+    stack = deque([i])
+    while stack:
+        stack_size = len(stack)
+        v = stack[0]
+        if not graph.explored[v]:
+            graph.explored[v] = True
+            for j in graph.vertices[v]:
+                if not graph.explored[j]:
+                    stack.appendleft(j)
+        else:
+            # for get SCC for the leader:
+            if prev_size > stack_size:
+                graph.leader = (graph.s, stack)
+                prev_size = stack_size
+
+            # kick explored vertex from stack:
+            stack.popleft()
+
+            # for get f-times order:
+            graph.f.appendleft(v)
+
+    # graph.explored = i              # mark as explored the vertex
+    # graph.leader = (graph.s, i)     # collect vertex in leader[s]-list
+    # for j in graph.vertices[i]:     # for each arc in (i,j) in G
+    #     if not graph.explored[j]:
+    #         dfs(graph, j)
+    # graph.f.appendleft(i)           # [n, ..., t, ..., 1] - finishing-time stack for second dfs_loop
 
 
 # %%
 if __name__ == "__main__":
     # ================= Multiple test cases ==================
-    from get_tests import filter_files
-
-    input_files = filter_files("./test_cases")
-    test_cases_dir = "./test_cases/"
-    test_paths = [test_cases_dir + file for file in input_files]
-    cases = {f"{i}," + str(name.split("/")[-1]): name for i, name in enumerate(test_paths)}
-    G = {}
-    rev_G = {}
-    SCC = {}
-    for case in [*cases]:
-        G[case] = Graph(cases[case])
-        rev_G[case] = Graph(cases[case], reverse=True)
-        SCC[case] = kosaraju(rev_G[case], G[case])
-        print(f"SCC[{case}] = ", SCC[case])
+    # from get_tests import filter_files
+    #
+    # input_files = filter_files("./test_cases")
+    # test_cases_dir = "./test_cases/"
+    # test_paths = [test_cases_dir + file for file in input_files]
+    # cases = {f"{i}," + str(name.split("/")[-1]): name for i, name in enumerate(test_paths)}
+    # G = {}
+    # rev_G = {}
+    # SCC = {}
+    # for case in [*cases]:
+    #     G[case] = Graph(cases[case])
+    #     rev_G[case] = Graph(cases[case], reverse=True)
+    #     SCC[case] = kosaraju(rev_G[case], G[case])
+    #     print(f"SCC[{case}] = ", SCC[case])
 
     # ======================= Single =========================
     ## test = test_cases_dir + input_files[0]
@@ -104,21 +129,8 @@ if __name__ == "__main__":
     # print(SCC_test)
 
     # ======================== Task ==========================
-    # import sys, threading
-    # sys.setrecursionlimit(800000)
-    # threading.stack_size(67108864)  # 67108864
-    #
-    # task = "./data_SCC.txt"
-    # G = Graph(task)
-    # rev_G = Graph(task, reverse=True)
-    # def main():
-    #
-    #     global G
-    #     global rev_G
-    #     SCC = kosaraju(rev_G, G)
-    #     print(SCC[:5], "This was SCC")
-    #     return G, rev_G, SCC
-    #
-    # # G, rev_G, SCC = main()
-    # thread = threading.Thread(target=main)
-    # thread.start()
+    task = "./data_SCC.txt"
+    G = Graph(task)
+    rev_G = Graph(task, reverse=True)
+    SCC = kosaraju(rev_G, G)
+    print(SCC[:5], "This was 5 largest SCC-elements.")
