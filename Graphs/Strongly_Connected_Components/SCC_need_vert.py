@@ -115,7 +115,7 @@ if __name__ == "__main__":
         global G
         global rev_G
         SCC = kosaraju(rev_G, G)
-        print(SCC[:5], "This was SCC")
+        print(SCC[:5], "This was 5 largest SCC-elements.")
         return G, rev_G, SCC
 
     thread = threading.Thread(target=main)

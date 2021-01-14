@@ -80,20 +80,20 @@ def dfs(graph, i):
 # %%
 if __name__ == "__main__":
     # ================= Multiple test cases ==================
-    from get_tests import filter_files
-
-    input_files = filter_files("./test_cases")
-    test_cases_dir = "./test_cases/"
-    test_paths = [test_cases_dir + file for file in input_files]
-    cases = {f"{i}," + str(name.split("/")[-1]): name for i, name in enumerate(test_paths)}
-    G = {}
-    rev_G = {}
-    SCC = {}
-    for case in [*cases]:
-        G[case] = Graph(cases[case])
-        rev_G[case] = Graph(cases[case], reverse=True)
-        SCC[case] = kosaraju(rev_G[case], G[case])
-        print(f"SCC[{case}] = ", SCC[case])
+    # from get_tests import filter_files
+    #
+    # input_files = filter_files("./test_cases")
+    # test_cases_dir = "./test_cases/"
+    # test_paths = [test_cases_dir + file for file in input_files]
+    # cases = {f"{i}," + str(name.split("/")[-1]): name for i, name in enumerate(test_paths)}
+    # G = {}
+    # rev_G = {}
+    # SCC = {}
+    # for case in [*cases]:
+    #     G[case] = Graph(cases[case])
+    #     rev_G[case] = Graph(cases[case], reverse=True)
+    #     SCC[case] = kosaraju(rev_G[case], G[case])
+    #     print(f"SCC[{case}] = ", SCC[case])
 
     # ======================= Single =========================
     ## test = test_cases_dir + input_files[0]
@@ -104,21 +104,21 @@ if __name__ == "__main__":
     # print(SCC_test)
 
     # ======================== Task ==========================
-    # import sys, threading
-    # sys.setrecursionlimit(800000)
-    # threading.stack_size(67108864)  # 67108864
-    #
-    # task = "./data_SCC.txt"
-    # G = Graph(task)
-    # rev_G = Graph(task, reverse=True)
-    # def main():
-    #
-    #     global G
-    #     global rev_G
-    #     SCC = kosaraju(rev_G, G)
-    #     print(SCC[:5], "This was SCC")
-    #     return G, rev_G, SCC
-    #
-    # # G, rev_G, SCC = main()
-    # thread = threading.Thread(target=main)
-    # thread.start()
+    import sys, threading
+    sys.setrecursionlimit(800000)
+    threading.stack_size(67108864)  # 67108864
+
+    task = "./data_SCC.txt"
+    G = Graph(task)
+    rev_G = Graph(task, reverse=True)
+    def main():
+
+        global G
+        global rev_G
+        SCC = kosaraju(rev_G, G)
+        print(SCC[:5], "This was 5 largest SCC-elements.")
+        return G, rev_G, SCC
+
+    # G, rev_G, SCC = main()
+    thread = threading.Thread(target=main)
+    thread.start()

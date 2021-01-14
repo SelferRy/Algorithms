@@ -72,22 +72,17 @@ def dfs_loop(graph, stack):
 
 
 def dfs(graph, i):
-    prev_size = float('inf')
+    # prev_size = float('inf')
     stack = deque([i])
     while stack:
-        stack_size = len(stack)
         v = stack[0]
         if not graph.explored[v]:
             graph.explored[v] = True
+            graph.leader = (graph.s, v)
             for j in graph.vertices[v]:
                 if not graph.explored[j]:
                     stack.appendleft(j)
         else:
-            # for get SCC for the leader:
-            if prev_size > stack_size:
-                graph.leader = (graph.s, stack)
-                prev_size = stack_size
-
             # kick explored vertex from stack:
             stack.popleft()
 
@@ -105,20 +100,20 @@ def dfs(graph, i):
 # %%
 if __name__ == "__main__":
     # ================= Multiple test cases ==================
-    # from get_tests import filter_files
-    #
-    # input_files = filter_files("./test_cases")
-    # test_cases_dir = "./test_cases/"
-    # test_paths = [test_cases_dir + file for file in input_files]
-    # cases = {f"{i}," + str(name.split("/")[-1]): name for i, name in enumerate(test_paths)}
-    # G = {}
-    # rev_G = {}
-    # SCC = {}
-    # for case in [*cases]:
-    #     G[case] = Graph(cases[case])
-    #     rev_G[case] = Graph(cases[case], reverse=True)
-    #     SCC[case] = kosaraju(rev_G[case], G[case])
-    #     print(f"SCC[{case}] = ", SCC[case])
+    from get_tests import filter_files
+
+    input_files = filter_files("./test_cases")
+    test_cases_dir = "./test_cases/"
+    test_paths = [test_cases_dir + file for file in input_files]
+    cases = {f"{i}," + str(name.split("/")[-1]): name for i, name in enumerate(test_paths)}
+    G = {}
+    rev_G = {}
+    SCC = {}
+    for case in [*cases]:
+        G[case] = Graph(cases[case])
+        rev_G[case] = Graph(cases[case], reverse=True)
+        SCC[case] = kosaraju(rev_G[case], G[case])
+        print(f"SCC[{case}] = ", SCC[case])
 
     # ======================= Single =========================
     ## test = test_cases_dir + input_files[0]
@@ -129,8 +124,8 @@ if __name__ == "__main__":
     # print(SCC_test)
 
     # ======================== Task ==========================
-    task = "./data_SCC.txt"
-    G = Graph(task)
-    rev_G = Graph(task, reverse=True)
-    SCC = kosaraju(rev_G, G)
-    print(SCC[:5], "This was 5 largest SCC-elements.")
+    # task = "./data_SCC.txt"
+    # G = Graph(task)
+    # rev_G = Graph(task, reverse=True)
+    # SCC = kosaraju(rev_G, G)
+    # print(SCC[:5], "This was 5 largest SCC-elements.")
