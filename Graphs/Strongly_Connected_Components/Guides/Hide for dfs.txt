@@ -1,0 +1,14 @@
+link: https://www.coursera.org/learn/algorithms-graphs-data-structures/discussions/weeks/1/threads/va-cF3G0RMivnBdxtDTIRg
+
+// while stack is not empty
+  // peek top of the stack, assign to v
+  // if v not explored
+    // mark v as explored
+    // for each edge of (v, w)
+      // if w is not explored
+        // push w onto the stack
+  // else : backtacking
+    // pop top of the stack
+     // if v is not labeled
+       // label v
+       // decrement current label
