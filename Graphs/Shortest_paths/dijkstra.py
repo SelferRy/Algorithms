@@ -9,7 +9,16 @@ class Graph(object):
     def vertices(self):
         return self._vertices
 
+    class V:
 
+        @property
+        def edges(self, v):
+            return self.vertices[v]
+
+        @property
+        def d(self):
+            if self._d
+            return self._d
 
 
 # ==========================================
