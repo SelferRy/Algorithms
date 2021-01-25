@@ -3,22 +3,14 @@ class Graph(object):
     def __init__(self, graph_dict={}):
         self._vertices = graph_dict
         self._edges = None
+        self.d = {}
+        self.p = {}
         # self.edges = self.get_edges
 
     @property
     def vertices(self):
         return self._vertices
 
-    class V:
-
-        @property
-        def edges(self, v):
-            return self.vertices[v]
-
-        @property
-        def d(self):
-            if self._d
-            return self._d
 
 
 # ==========================================
@@ -42,44 +34,47 @@ class Graph(object):
     #     self._edges.append()
     #     return self._edges
 
-class V(Graph):
-
-    def __init__(self, d=1000000, p=None):
-        self._d = d
-        self._p = p
-
-
-    @property
-    def d(self):
-        return self._d
-
-    @d.setter
-    def d(self, weight):
-        self._d = weight
-        return self._d
-
-
-    @property
-    def p(self):
-        return self._p
-
-    @p.setter
-    def p(self, vert):
-        self._p = vert
-        return self._p
-
-
-class Subgraph(object):
-
-    def add_vert(self):
-        pass
-
-    def add_edge(self):
-        pass
+# class V(Graph):
+#
+#     def __init__(self, d=1000000, p=None):
+#         self._d = d
+#         self._p = p
+#
+#
+#     @property
+#     def d(self):
+#         return self._d
+#
+#     @d.setter
+#     def d(self, weight):
+#         self._d = weight
+#         return self._d
+#
+#
+#     @property
+#     def p(self):
+#         return self._p
+#
+#     @p.setter
+#     def p(self, vert):
+#         self._p = vert
+#         return self._p
+#
+#
+# class Subgraph(object):
+#
+#     def add_vert(self):
+#         pass
+#
+#     def add_edge(self):
+#         pass
 
 def initialize_single_sourse(G, s):
-    for v in G.vertices:
-         =
+    """ Done """
+    for v in [*G.vertices]:
+        G.d[v] = 1000000
+        G.p[v] = None
+    G.d[s] = 0
 
 
 def dijkstra(graph):
