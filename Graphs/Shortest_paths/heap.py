@@ -1,5 +1,3 @@
-# import numpy as np
-
 class Heap(object):
 
     def __init__(self, array):
@@ -10,10 +8,10 @@ class Heap(object):
         return i // 2
 
     def left(self, i):
-        return 2 * i
+        return 2*i + 1
 
     def right(self, i):
-        return 2*i + 1
+        return 2*i + 2
 
     @property
     def heap_size(self):
@@ -65,6 +63,25 @@ class Heap(object):
             self.min_heapify(i)
 
 
+class Prior_queue(Heap):
+
+    def heap_extract_max(self):
+        if self.heap_size < 1:
+            raise IndexError("The queue is empty.")
+        max = self.array[0]
+        self.array[0] = self.array[self.heap_size]
+        self.heap_size -= 1
+        self.max_heapify(0)
+        return max
+    
+    def heap_extract_min(self):
+        if self.heap_size < 1:
+            raise IndexError("The queue is empty.")
+        min = self.array[0]
+        self.array[0] = self.array[self.heap_size]
+        self.heap_size -= 1
+        self.min_heapify(0)
+        return min
 
 
 if __name__ == "__main__":
@@ -73,3 +90,11 @@ if __name__ == "__main__":
     print(A.array)
     A.build_min_heap()
     print(A.array)
+
+    a2 = Heap([500, 400, 200, 100, 150, 1, 10])
+    a2.build_max_heap()
+    print(a2.array)
+    a2.build_min_heap()
+    print(a2.array)
+
+
