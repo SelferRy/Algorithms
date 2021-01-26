@@ -77,8 +77,9 @@ def initialize_single_sourse(G, s):
     G.d[s] = 0
 
 
-def dijkstra(graph):
-    s = 1
+def dijkstra(G, s):
+    initialize_single_sourse(G, s)
+
 
 
 if __name__ == "__main__":
