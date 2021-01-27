@@ -1,3 +1,5 @@
+from heap import Prior_queue
+
 class Graph(object):
 
     def __init__(self, graph_dict={}):
@@ -69,6 +71,12 @@ class Graph(object):
 #     def add_edge(self):
 #         pass
 
+def relax(u, v, w):
+    if v.d > u.d + w[u, v]:
+        v.d = u.d + w[u, v]
+        v.p = u
+
+
 def initialize_single_sourse(G, s):
     """ Done """
     for v in [*G.vertices]:
@@ -79,7 +87,13 @@ def initialize_single_sourse(G, s):
 
 def dijkstra(G, s):
     initialize_single_sourse(G, s)
-
+    S = []
+    Q = Prior_queue([*G.vertices])
+    while Q != {}:
+        u = Q.heap_extract_min()
+        S.append(u)
+        for v in G.vertices[u]:
+            relax(u, v, w)
 
 
 if __name__ == "__main__":
