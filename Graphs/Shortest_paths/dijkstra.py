@@ -7,13 +7,20 @@ class Graph(object):
         self._edges = None
         self.d = {}
         self.p = {}
+        self._weights = None
         # self.edges = self.get_edges
 
     @property
     def vertices(self):
         return self._vertices
 
-
+    @property
+    def weights(self):
+        if self._weights == None:
+            self._weights = {f"{v}, {u[0]}": u[1] for v in [*self._vertices] for u in self._vertices[v]}
+        return self._weights
+        # u = self.vertices[u]
+        # for i in []
 
 # ==========================================
     def v(self, vert):
@@ -71,10 +78,15 @@ class Graph(object):
 #     def add_edge(self):
 #         pass
 
-def relax(u, v, w):
-    if v.d > u.d + w[u, v]:
-        v.d = u.d + w[u, v]
-        v.p = u
+# def relax(u, v, w):
+#     if v.d > u.d + w[f"{u}, {v}"]:
+#         v.d = u.d + w[f"{u}, {v}"]
+#         v.p = u
+
+    def relax(self, u, v, w=self.weights):
+        if self.d[v] > self.d[u] + w[f"{u}, {v}"]:
+            self.d[v] = self.d[v] + w[f"{u}, {v}"]
+            self.p[v] = u
 
 
 def initialize_single_sourse(G, s):
@@ -93,7 +105,7 @@ def dijkstra(G, s):
         u = Q.heap_extract_min()
         S.append(u)
         for v in G.vertices[u]:
-            relax(u, v, w)
+            G.relax(u, v)
 
 
 if __name__ == "__main__":
