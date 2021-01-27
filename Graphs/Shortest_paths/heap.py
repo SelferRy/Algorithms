@@ -79,9 +79,36 @@ class Prior_queue(Heap):
             raise IndexError("The queue is empty.")
         min = self.array[0]
         self.array[0] = self.array[self.heap_size]
-        self.heap_size -= 1
+        # self.heap_size -= 1
+        self.array.pop()
         self.min_heapify(0)
         return min
+
+    def heap_increase_key(self, i, key):
+        if key < self.array[i]:
+            raise ValueError("new key is smaller than current key")
+        self.array[i] = key
+        while i >= 0 and self.array[self.parent(i)] < self.array[i]:
+            self.array[i], self.array[self.parent(i)] = self.array[self.parent(i)], self.array[i]
+            i = self.parent(i)
+
+    def heap_decrease_key(self, i, key):
+        if key > self.array[i]:
+            raise ValueError("new key is larger than current key")
+        self.array[i] = key
+        while i >= 0 and self.array[self.parent(i)] > self.array[i]:
+            self.array[i], self.array[self.parent(i)] = self.array[self.parent(i)], self.array[i]
+            i = self.parent(i)
+
+    def max_heap_insert(self, key):
+        self.array.append(float('-inf'))
+        heap_size = len(self.array) - 1
+        self.heap_increase_key(heap_size, key)
+
+    def min_heap_insert(self, key):
+        self.array.append(float('inf'))
+        heap_size = len(self.array) - 1
+        self.heap_decrease_key(heap_size, key)
 
 
 if __name__ == "__main__":
@@ -91,10 +118,27 @@ if __name__ == "__main__":
     A.build_min_heap()
     print(A.array)
 
+
     a2 = Heap([500, 400, 200, 100, 150, 1, 10])
     a2.build_max_heap()
     print(a2.array)
     a2.build_min_heap()
     print(a2.array)
 
+    B = Prior_queue([10, 50, 3, 8, 2])
+    B.build_min_heap()
+    print("\tB-heap:\n", B.array)
+    print(B.heap_extract_min())
+    print(B.array)
+    B.min_heap_insert(1)
+    print("after insertion 1 to heap B:", B.array)
+    B.min_heap_insert(4)
+    print("after insertion 4 to heap B:", B.array)
 
+    b2 = Prior_queue([500, 400, 200, 100, 150, 1, 10])
+    b2.build_min_heap()
+    print("\tb2-heap:\n", b2.array)
+    print(b2.heap_extract_min())
+    print(b2.array)
+    b2.min_heap_insert(600)
+    print("after insertion 600 to heap b2:", b2.array)
