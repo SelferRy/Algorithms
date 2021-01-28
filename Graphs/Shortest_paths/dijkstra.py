@@ -83,10 +83,10 @@ class Graph(object):
 #         v.d = u.d + w[f"{u}, {v}"]
 #         v.p = u
 
-    def relax(self, u, v, w=self.weights):
-        if self.d[v] > self.d[u] + w[f"{u}, {v}"]:
-            self.d[v] = self.d[v] + w[f"{u}, {v}"]
-            self.p[v] = u
+def relax(G, u, v, w=G.weights):
+    if G.d[v] > G.d[u] + w[f"{u}, {v}"]:
+        G.d[v] = G.d[v] + w[f"{u}, {v}"]
+        G.p[v] = u
 
 
 def initialize_single_sourse(G, s):
@@ -107,7 +107,7 @@ def dijkstra(G, s):
         u = Q.heap_extract_min()
         S.append(u)
         for v in G.vertices[u]:
-            G.relax(u, v)
+            relax(G, u, v)
 
 
 if __name__ == "__main__":
