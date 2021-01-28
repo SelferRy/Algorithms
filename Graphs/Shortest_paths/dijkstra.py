@@ -100,7 +100,9 @@ def initialize_single_sourse(G, s):
 def dijkstra(G, s):
     initialize_single_sourse(G, s)
     S = []
-    Q = Prior_queue([*G.vertices])
+    # ================ CURRENT ZONE: ==============
+    Q = Prior_queue() # Prior_queue([*G.vertices])
+    # =============================================
     while Q != {}:
         u = Q.heap_extract_min()
         S.append(u)
