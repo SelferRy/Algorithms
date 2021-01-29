@@ -1,21 +1,24 @@
 class Heap(object):
 
-    def __init__(self, array, key=None):
-        self.array = array
+    def __init__(self, array: dict, key=None):
+        self.reverse_dict = {val: key for key, val in array.items()}
+        self.array = [*self.reverse_dict]
         self._hs = None
         if key == "min":
             self.build_min_heap()
         if key == "max":
             self.build_max_heap()
+        self.keys = [self.reverse_dict[key] for key in self.array]
+        # self.array = {self.reverse_dict[key]: key for key in self.array}
 
     def parent(self, i):
         return i // 2
 
     def left(self, i):
-        return 2*i + 1
+        return 2 * i + 1
 
     def right(self, i):
-        return 2*i + 2
+        return 2 * i + 2
 
     @property
     def heap_size(self):
@@ -28,9 +31,8 @@ class Heap(object):
         self._hs = i
         return self._hs
 
-
     def max_heapify(self, i):
-        A = Heap(self.array) # self.array # self.Instance.heap_size(A)
+        A = Heap(self.array, key="max")  # self.array # self.Instance.heap_size(A)
         l = self.left(i)
         r = self.right(i)
         if l < A.heap_size and A.array[l] > A.array[i]:
@@ -44,7 +46,7 @@ class Heap(object):
             self.max_heapify(largest)
 
     def min_heapify(self, i):
-        A = Heap(self.array) # self.array # self.Instance.heap_size(A)
+        A = Heap(self.array, key="min")  # self.array # self.Instance.heap_size(A)
         l = self.left(i)
         r = self.right(i)
         if l <= A.heap_size and A.array[l] < A.array[i]:
@@ -58,13 +60,15 @@ class Heap(object):
             self.min_heapify(smallest)
 
     def build_max_heap(self):
-        self.heap_size = len(self.array)
-        for i in range(len(self.array)//2, 0, -1):
+        # self.heap_size = len(self.array)
+        for i in range(len(self.array) // 2, 0, -1):
             self.max_heapify(i)
+        # self.keys = [self.reverse_dict[key] for key in self.array]
 
     def build_min_heap(self):
-        for i in reversed(range(len(self.array)//2)):
+        for i in reversed(range(len(self.array) // 2)):
             self.min_heapify(i)
+        # self.keys = [self.reverse_dict[key] for key in self.array]
 
 
 class Prior_queue(Heap):
@@ -76,8 +80,9 @@ class Prior_queue(Heap):
         self.array[0] = self.array[self.heap_size]
         self.heap_size -= 1
         self.max_heapify(0)
+        self.keys = [self.reverse_dict[key] for key in self.array]
         return max
-    
+
     def heap_extract_min(self):
         if self.heap_size < 1:
             raise IndexError("The queue is empty.")
@@ -86,23 +91,28 @@ class Prior_queue(Heap):
         # self.heap_size -= 1
         self.array.pop()
         self.min_heapify(0)
+        self.keys = [self.reverse_dict[key] for key in self.array]
         return min
 
     def heap_increase_key(self, i, key):
         if key < self.array[i]:
             raise ValueError("new key is smaller than current key")
         self.array[i] = key
+        val = self.reverse_dict[self.array[i]]
         while i >= 0 and self.array[self.parent(i)] < self.array[i]:
             self.array[i], self.array[self.parent(i)] = self.array[self.parent(i)], self.array[i]
             i = self.parent(i)
+        self.keys = [self.reverse_dict[k] if k != key else self.reverse_dict[val] for k in self.array]
 
     def heap_decrease_key(self, i, key):
         if key > self.array[i]:
             raise ValueError("new key is larger than current key")
         self.array[i] = key
+        val = self.reverse_dict[self.array[i]]
         while i >= 0 and self.array[self.parent(i)] > self.array[i]:
             self.array[i], self.array[self.parent(i)] = self.array[self.parent(i)], self.array[i]
             i = self.parent(i)
+        self.keys = [self.reverse_dict[k] if k != key else self.reverse_dict[val] for k in self.array]
 
     def max_heap_insert(self, key):
         self.array.append(float('-inf'))
@@ -121,7 +131,6 @@ if __name__ == "__main__":
     print(A.array)
     A.build_min_heap()
     print(A.array)
-
 
     a2 = Heap([500, 400, 200, 100, 150, 1, 10])
     a2.build_max_heap()

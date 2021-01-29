@@ -96,6 +96,12 @@ def initialize_single_sourse(G, s):
         G.p[v] = None
     G.d[s] = 0
 
+def dict_to_heap(dct:dict):
+    reversed_dict = {val:key for key, val in dct.items()}
+    weights = Prior_queue([*reversed_dict], "min")
+    Q = {reversed_dict[i]:i for i in weights.array}
+    return
+
 
 def dijkstra(G, s):
     initialize_single_sourse(G, s)
