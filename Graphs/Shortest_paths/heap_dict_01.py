@@ -16,7 +16,7 @@ class Heap(object):
         """ In the case 'round' is analog ceil (for power of 2). """
         # if i % 2:
         #     return i // 2
-        return (i - 1) // 2 #  round(i / 2)
+        return (i - 1) // 2  #  round(i / 2)
 
     @staticmethod
     def left(i):
@@ -85,7 +85,7 @@ class PriorQueue(Heap):
             raise IndexError("The queue is empty.")
         max = self.array[0]
         self.array[0] = self.array[self.heap_size]
-        self.heap_size -= 1
+        # self.heap_size -= 1
         self.max_heapify(0)
         return max
     
