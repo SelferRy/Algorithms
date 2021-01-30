@@ -13,10 +13,7 @@ class Heap(object):
 
     @staticmethod
     def parent(i):
-        """ In the case 'round' is analog ceil (for power of 2). """
-        # if i % 2:
-        #     return i // 2
-        return (i - 1) // 2  #  round(i / 2)
+        return (i - 1) // 2
 
     @staticmethod
     def left(i):
