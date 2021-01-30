@@ -59,7 +59,7 @@ class Heap(object):
 
     def build_max_heap(self):
         self.heap_size = len(self.array)
-        for i in range(len(self.array)//2, 0, -1):
+        for i in range(len(self.array)//2 - 1, -1, -1):
             self.max_heapify(i)
 
     def build_min_heap(self):
