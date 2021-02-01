@@ -1,4 +1,4 @@
-from heap import Prior_queue
+from heap_dict_01 import PriorQueue
 
 class Graph(object):
 
@@ -83,10 +83,10 @@ class Graph(object):
 #         v.d = u.d + w[f"{u}, {v}"]
 #         v.p = u
 
-def relax(G, u, v, w=G.weights):
-    if G.d[v] > G.d[u] + w[f"{u}, {v}"]:
-        G.d[v] = G.d[v] + w[f"{u}, {v}"]
-        G.p[v] = u
+def relax(G, u, v, w):
+    if G.d[v[0]] > G.d[u] + w[f"{u}, {v[0]}"]:
+        G.d[v[0]] = G.d[v[0]] + w[f"{u}, {v[0]}"]
+        G.p[v[0]] = u
 
 
 def initialize_single_sourse(G, s):
@@ -96,25 +96,26 @@ def initialize_single_sourse(G, s):
         G.p[v] = None
     G.d[s] = 0
 
-def dict_to_heap(dct:dict):
-    reversed_dict = {val:key for key, val in dct.items()}
-    weights = Prior_queue([*reversed_dict], "min")
-    Q = {reversed_dict[i]:i for i in weights.array}
-    return
+# def dict_to_heap(dct:dict):
+#     reversed_dict = {val:key for key, val in dct.items()}
+#     weights = Prior_queue([*reversed_dict], "min")
+#     Q = {reversed_dict[i]:i for i in weights.array}
+#     return
 
 
 def dijkstra(G, s):
     initialize_single_sourse(G, s)
     S = []
     # ================ CURRENT ZONE: ==============
-    Q = Prior_queue() # Prior_queue([*G.vertices])
+    Q = PriorQueue(G.d, "min") # Prior_queue([*G.vertices])  # if it will be list of objects G.d[i] that can be done
     # =============================================
     while Q != {}:
-        u = Q.heap_extract_min()
-        S.append(u)
+        Q.build_min_heap()  # there is O(m*lg(n)) cost
+        u = Q.heap_extract_min()[0]
+        S.append([u, G.d[u]])
         for v in G.vertices[u]:
-            relax(G, u, v)
-
+            relax(G, u, v, w=G.weights)
+    return S
 
 if __name__ == "__main__":
     # ==================================== Exam-case =============================================
@@ -125,4 +126,5 @@ if __name__ == "__main__":
 
     # d1 = data[1]
     G = Graph(data)
-    G.edges
+    distances = dijkstra(G, 1)
+    # G.edges
