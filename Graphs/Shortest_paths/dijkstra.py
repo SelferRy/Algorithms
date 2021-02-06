@@ -71,11 +71,9 @@ def dijkstra(G, s):
     initialize_single_sourse(G, s)
     S = []
     Q = PriorQueue(G.d, "min")
-    # Q.heap_size += 1
     while Q.array:
         Q.build_min_heap()  # there is O(m*lg(n)) cost
         u = Q.heap_extract_min()
-        # Q.heap_size -= 1
         S.append([u, G.d[u]])
         for v in G.vertices[u]:
             relax(G, u, v, w=G.weights)
