@@ -30,16 +30,21 @@ class Graph(object):
         return edges
 
 
-def relax(G, u, v, w):
+def relax(G, u, v, w, Q):
     """
     Relaxation technique for edge in the graph.
 
-    Note (for use Priority Queue method):
+    Note 1 (for use Priority Queue method):
     It can be done with PriorQueue.heap_decrease_key method,
     but need addition indices-array (with positions where Q.d[i] in Q.array).
     It's not efficient for memory used, but in the case can replace Q.build_min_heap() in general function 'dijkstra'
     to Q.heap_decrease_key in sub-function Dijkstra 'relax'.
     But in time-complexity it will faster.
+
+    Note 2 (for use Priority Queue method):
+    Another way use Priority Queue method for Dijkstra is create Q with only source vertex (queue's property?).
+    Then with help insertion_min_heap insert adjacency vertices to Q (for maintain heap-property).
+    That could be done in 'relax' function.
 
     Parameters
     ----------
@@ -55,6 +60,7 @@ def relax(G, u, v, w):
     if G.d[v[0]] > G.d[u] + w[f"{u}, {v[0]}"]:
         G.d[v[0]] = G.d[u] + w[f"{u}, {v[0]}"]
         G.p[v[0]] = u
+    Q.min_heap_insert(v)
 
 
 def initialize_single_sourse(G, s):
@@ -67,16 +73,22 @@ def initialize_single_sourse(G, s):
 
 Q = 0
 def dijkstra(G, s):
+    """
+    Parameters
+    ----------
+    G -- graph
+    s -- source vertex name
+
+    """
     global Q
     initialize_single_sourse(G, s)
     S = []
-    Q = PriorQueue(G.d, "min")
+    Q = PriorQueue(s, "min")
     while Q.array:
-        Q.build_min_heap()  # there is O(m*lg(n)) cost
         u = Q.heap_extract_min()
         S.append([u, G.d[u]])
         for v in G.vertices[u]:
-            relax(G, u, v, w=G.weights)
+            relax(G, u, v, w=G.weights, Q=Q)
     return S
 
 if __name__ == "__main__":
