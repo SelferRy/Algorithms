@@ -146,7 +146,7 @@ class PriorQueue(Heap):
     def min_heap_insert(prior_queue, key, val):
         prior_queue.array.append(key)
         prior_queue.d[key] = float('inf')
-        heap_size = len(prior_queue.array) - 1
+        heap_size = prior_queue.heap_size # len(prior_queue.array) - 1
         prior_queue.heap_decrease_key(prior_queue, heap_size, val)
         prior_queue.heap_size += 1
 

@@ -30,7 +30,7 @@ class Graph(object):
         return edges
 
 
-def relax(G, u, v, w):
+def relax(G, u, v, w, Q):
     """
     Relaxation technique for edge in the graph.
 
