@@ -1,4 +1,4 @@
-from heap_dict_01 import PriorQueue
+from heap_dict import PriorQueue
 
 class Graph(object):
 
@@ -21,6 +21,11 @@ class Graph(object):
         return self._weights
         # u = self.vertices[u]
         # for i in []
+
+
+    # @property
+    # def get_d(self):
+    #     return [(key, self.d[key]) for key in [*self.d]] # [*self.d.items()]
 
 # ==========================================
     def v(self, vert):
@@ -56,6 +61,7 @@ class Graph(object):
 #
 #     @d.setter
 #     def d(self, weight):
+
 #         self._d = weight
 #         return self._d
 #
@@ -83,9 +89,14 @@ class Graph(object):
 #         v.d = u.d + w[f"{u}, {v}"]
 #         v.p = u
 
-def relax(G, u, v, w):
+# def relax(G, u, v, w):
+#     if G.d[v[0]] > G.d[u] + w[f"{u}, {v[0]}"]:
+#         G.d[v[0]] = G.d[u] + w[f"{u}, {v[0]}"]
+#         G.p[v[0]] = u
+
+def relax_heap(G, u, v, w):
     if G.d[v[0]] > G.d[u] + w[f"{u}, {v[0]}"]:
-        G.d[v[0]] = G.d[v[0]] + w[f"{u}, {v[0]}"]
+        G.d[v[0]] = G.d[u] + w[f"{u}, {v[0]}"]
         G.p[v[0]] = u
 
 
@@ -102,16 +113,19 @@ def initialize_single_sourse(G, s):
 #     Q = {reversed_dict[i]:i for i in weights.array}
 #     return
 
-
+Q = 0
 def dijkstra(G, s):
+    global Q
     initialize_single_sourse(G, s)
     S = []
     # ================ CURRENT ZONE: ==============
     Q = PriorQueue(G.d, "min") # Prior_queue([*G.vertices])  # if it will be list of objects G.d[i] that can be done
     # =============================================
-    while Q != {}:
+    # Q.heap_size += 1
+    while Q.array:
         Q.build_min_heap()  # there is O(m*lg(n)) cost
-        u = Q.heap_extract_min()[0]
+        u = Q.heap_extract_min()
+        # Q.heap_size -= 1
         S.append([u, G.d[u]])
         for v in G.vertices[u]:
             relax(G, u, v, w=G.weights)
@@ -127,4 +141,6 @@ if __name__ == "__main__":
     # d1 = data[1]
     G = Graph(data)
     distances = dijkstra(G, 1)
+    result = [G.d[v] for v in [7, 37, 59, 82, 99, 115, 133, 165, 188, 197]]
+    print(result)
     # G.edges
