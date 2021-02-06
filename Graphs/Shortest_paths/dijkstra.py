@@ -60,7 +60,7 @@ def relax(G, u, v, w, Q):
     if G.d[v[0]] > G.d[u] + w[f"{u}, {v[0]}"]:
         G.d[v[0]] = G.d[u] + w[f"{u}, {v[0]}"]
         G.p[v[0]] = u
-    Q.min_heap_insert(v)
+    PriorQueue.min_heap_insert(Q, v[0], G.d[v[0]])
 
 
 def initialize_single_sourse(G, s):
@@ -83,7 +83,7 @@ def dijkstra(G, s):
     global Q
     initialize_single_sourse(G, s)
     S = []
-    Q = PriorQueue(s, "min")
+    Q = PriorQueue({s: G.d[s]}, "min")
     while Q.array:
         u = Q.heap_extract_min()
         S.append([u, G.d[u]])
