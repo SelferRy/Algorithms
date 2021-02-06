@@ -99,13 +99,14 @@ class PriorQueue(Heap):
         self.min_heapify(0)
         return min
 
-    def heap_increase_key(self, i, key):
-        if key < self.array[i][1]:
+    @staticmethod
+    def heap_increase_key(arr_pointers, dict_val, i, key):
+        if key < dict_val[arr_pointers[i]]:
             raise ValueError("new key is smaller than current key")
-        self.array[i] = key
-        while i > 0 and self.d[self.array[self.parent(i)]] < self.d[self.array[i]]:
-            self.array[i], self.array[self.parent(i)] = self.array[self.parent(i)], self.array[i]
-            i = self.parent(i)
+        dict_val[arr_pointers[i]] = key
+        while i > 0 and dict_val[arr_pointers[Heap.parent(i)]] < dict_val[arr_pointers[i]]:
+            arr_pointers[i], arr_pointers[Heap.parent(i)] = arr_pointers[Heap.parent(i)], arr_pointers[i]
+            i = Heap.parent(i)
 
     def heap_decrease_key(self, i, key):
         if key > self.array[i][1]:
@@ -115,9 +116,11 @@ class PriorQueue(Heap):
             self.array[i], self.array[self.parent(i)] = self.array[self.parent(i)], self.array[i]
             i = self.parent(i)
 
-    def max_heap_insert(self, key, val):
-        self.array.append((key, float('-inf')))
-        self.heap_increase_key(self.heap_size, val)
+    @staticmethod
+    def max_heap_insert(arr_pointers, dict_val, key, val):
+        arr_pointers.append((key, float('-inf')))
+        heap_size = len(arr_pointers) - 1
+        PriorQueue.heap_increase_key(arr_pointers, dict_val, heap_size, val)
 
     def min_heap_insert(self, key, val):
         self.array.append((key, float('inf')))
@@ -144,39 +147,39 @@ class PriorQueue(Heap):
 #
 #
 if __name__ == "__main__":
-    A = dict(zip(["a", "b", "c", "d", "e"], [10, 50, 3, 8, 2]))
-    A = Heap(A, "max")
-    print("Test 1.1: Build-Max-Heap", A.array)
-    print("Test 1.1: Build-Max-Heap", [A.d[key] for key in A.array])
-    A = Heap(A.d, "min")
-    print("Test 1.2: Build-Min-Heap", A.array)
-    print("Test 1.2: Build-Min-Heap", [A.d[key] for key in A.array])
-
-    a2 = dict(zip(["A", "B", "C", "D", "E", "F", "G"], [500, 400, 200, 100, 150, 1, 10]))
-    a2 = Heap(a2, "max")
-    # a2.build_max_heap()
-    print("Test 2.1: Build-Max-Heap", a2.array)
-    print("Test 2.1: Build-Max-Heap", [a2.d[key] for key in a2.array])
-    a2.build_min_heap()
-    print("Test 2.2: Build-Min-Heap", a2.array)
-    print("Test 2.2: Build-Min-Heap", [a2.d[key] for key in a2.array])
-
-    B = zip(["a", "b", "c", "d", "e"], [10, 50, 3, 8, 2])
-    B = PriorQueue(dict(B))
-    B.build_min_heap()
-    print("Test 3.1: Build-Min-Heap", "\tB-heap:\n", B.array)
-    print("Test 3.1: Build-Min-Heap", [B.d[key] for key in B.array])
-    print("extracted min =", B.heap_extract_min())
-    label = "array after extracted:"
-    print(label, B.array, "\n",
-          label, [B.d[key] for key in B.array])
-    B.min_heap_insert("min_insert", 1)
-    label = "after insertion 1 to heap B:"
-    print(label, B.array, "\n",
-          label, [B.d[key] for key in B.array])
-    B.min_heap_insert("min_insert", 4)
-    print("after insertion 4 to heap B:", B.array)
-    print("after insertion 4 to heap B:", [B.d[key] for key in B.array])
+    # A = dict(zip(["a", "b", "c", "d", "e"], [10, 50, 3, 8, 2]))
+    # A = Heap(A, "max")
+    # print("Test 1.1: Build-Max-Heap", A.array)
+    # print("Test 1.1: Build-Max-Heap", [A.d[key] for key in A.array])
+    # A = Heap(A.d, "min")
+    # print("Test 1.2: Build-Min-Heap", A.array)
+    # print("Test 1.2: Build-Min-Heap", [A.d[key] for key in A.array])
+    #
+    # a2 = dict(zip(["A", "B", "C", "D", "E", "F", "G"], [500, 400, 200, 100, 150, 1, 10]))
+    # a2 = Heap(a2, "max")
+    # # a2.build_max_heap()
+    # print("Test 2.1: Build-Max-Heap", a2.array)
+    # print("Test 2.1: Build-Max-Heap", [a2.d[key] for key in a2.array])
+    # a2.build_min_heap()
+    # print("Test 2.2: Build-Min-Heap", a2.array)
+    # print("Test 2.2: Build-Min-Heap", [a2.d[key] for key in a2.array])
+    #
+    # B = zip(["a", "b", "c", "d", "e"], [10, 50, 3, 8, 2])
+    # B = PriorQueue(dict(B))
+    # B.build_min_heap()
+    # print("Test 3.1: Build-Min-Heap", "\tB-heap:\n", B.array)
+    # print("Test 3.1: Build-Min-Heap", [B.d[key] for key in B.array])
+    # print("extracted min =", B.heap_extract_min())
+    # label = "array after extracted:"
+    # print(label, B.array, "\n",
+    #       label, [B.d[key] for key in B.array])
+    # B.min_heap_insert("min_insert", 1)
+    # label = "after insertion 1 to heap B:"
+    # print(label, B.array, "\n",
+    #       label, [B.d[key] for key in B.array])
+    # B.min_heap_insert("min_insert", 4)
+    # print("after insertion 4 to heap B:", B.array)
+    # print("after insertion 4 to heap B:", [B.d[key] for key in B.array])
 
     b2 = zip(["A", "B", "C", "D", "E", "F", "G"], [500, 400, 200, 100, 150, 1, 10])
     b2 = PriorQueue(dict(b2))
@@ -186,46 +189,46 @@ if __name__ == "__main__":
     print("extracted min =", b2.heap_extract_min())
     print("array after extracted:", b2.array)
     print("array after extracted:", [b2.d[key] for key in b2.array])
-    b2.min_heap_insert("max_insert", 600)
-    print("after insertion 600 to heap b2:", b2.array)
-    print("after insertion 600 to heap b2:", [b2.d[key] for key in b2.array])
+    # b2.min_heap_insert("max_insert", 600)
+    # print("after insertion 600 to heap b2:", b2.array)
+    # print("after insertion 600 to heap b2:", [b2.d[key] for key in b2.array])
     b2.build_max_heap()
     print("Max-Heap:", b2.array)
     print("Max-Heap:", [b2.d[key] for key in b2.array])
-    b2.max_heap_insert("Max-Heap_insert", 700)
+    b2.max_heap_insert(b2.array, b2.d, "Max-Heap_insert", 700) #  ("Max-Heap_insert", 700)
     print(f"After insert {700}:", b2.array)
     print(f"After insert {700}:", [b2.d[key] for key in b2.array])
-    b2.build_min_heap()
-    print("Min-Heap:", b2.array)
-    print("Min-Heap:", [b2.d[key] for key in b2.array])
-    b2.min_heap_insert("min_insert", 0.5)
-    print(f"After insert {0.5}:", b2.array)
-    print(f"After insert {0.5}:", [b2.d[key] for key in b2.array])
-    b2.min_heap_insert("round", 5)
-    print(f"Test for parent. Insert {5}:", b2.array)
-    print(f"Test for parent. Insert {5}:", [b2.d[key] for key in b2.array])
-    print(b2.parent(2))
-
-    c = list(map(str, range(15, 0, -1)))
-    c = zip(c, range(len(c), -1, -1))
-    c = PriorQueue(dict(c))
-    print("start array:", c.array)
-    print("start array:", [c.d[key] for key in c.array])
-    c.build_min_heap()
-    print("Test 4.1: Build-Min-Heap", "\tc-heap:\n", c.array)
-    print("Test 4.1: Build-Min-Heap", "\tc-heap:\n", [c.d[key] for key in c.array])
-    print("extracted min =", c.heap_extract_min())
-    print("array after extracted:", c.array)
-    print("array after extracted:", [c.d[key] for key in c.array])
-    c.min_heap_insert("17", 1)
-    print("array after insertion:", c.array)
-    print("array after insertion:", [c.d[key] for key in c.array])
-    c.build_max_heap()
-    print("Max-Heap:", c.array)
-    print("Max-Heap:", [c.d[key] for key in c.array])
-    c.max_heap_insert("Max-Heap_insert", 700)
-    print(f"After insert {700}:", c.array)
-    print(f"After insert {700}:", [c.d[key] for key in c.array])
-    test = PriorQueue({"a": 1, "b": 2}, "min")
-    test.d["a"] = 5
-    test.build_min_heap()
+    # b2.build_min_heap()
+    # print("Min-Heap:", b2.array)
+    # print("Min-Heap:", [b2.d[key] for key in b2.array])
+    # b2.min_heap_insert("min_insert", 0.5)
+    # print(f"After insert {0.5}:", b2.array)
+    # print(f"After insert {0.5}:", [b2.d[key] for key in b2.array])
+    # b2.min_heap_insert("round", 5)
+    # print(f"Test for parent. Insert {5}:", b2.array)
+    # print(f"Test for parent. Insert {5}:", [b2.d[key] for key in b2.array])
+    # print(b2.parent(2))
+    #
+    # c = list(map(str, range(15, 0, -1)))
+    # c = zip(c, range(len(c), -1, -1))
+    # c = PriorQueue(dict(c))
+    # print("start array:", c.array)
+    # print("start array:", [c.d[key] for key in c.array])
+    # c.build_min_heap()
+    # print("Test 4.1: Build-Min-Heap", "\tc-heap:\n", c.array)
+    # print("Test 4.1: Build-Min-Heap", "\tc-heap:\n", [c.d[key] for key in c.array])
+    # print("extracted min =", c.heap_extract_min())
+    # print("array after extracted:", c.array)
+    # print("array after extracted:", [c.d[key] for key in c.array])
+    # c.min_heap_insert("17", 1)
+    # print("array after insertion:", c.array)
+    # print("array after insertion:", [c.d[key] for key in c.array])
+    # c.build_max_heap()
+    # print("Max-Heap:", c.array)
+    # print("Max-Heap:", [c.d[key] for key in c.array])
+    # c.max_heap_insert("Max-Heap_insert", 700)
+    # print(f"After insert {700}:", c.array)
+    # print(f"After insert {700}:", [c.d[key] for key in c.array])
+    # test = PriorQueue({"a": 1, "b": 2}, "min")
+    # test.d["a"] = 5
+    # test.build_min_heap()
