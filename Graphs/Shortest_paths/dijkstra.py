@@ -8,7 +8,6 @@ class Graph(object):
         self.d = {}
         self.p = {}
         self._weights = None
-        # self.edges = self.get_edges
 
     @property
     def vertices(self):
@@ -19,21 +18,10 @@ class Graph(object):
         if self._weights == None:
             self._weights = {f"{v}, {u[0]}": u[1] for v in [*self._vertices] for u in self._vertices[v]}
         return self._weights
-        # u = self.vertices[u]
-        # for i in []
-
-
-    # @property
-    # def get_d(self):
-    #     return [(key, self.d[key]) for key in [*self.d]] # [*self.d.items()]
-
-# ==========================================
-    def v(self, vert):
-        return self._path_info[vert]
 
     @property
     def edges(self):
-        if self._edges == None: # or [*self.graph_dict] != [v[0] for v in self._edges]:
+        if self._edges == None:
             self._edges = self.get_edges()
         return self._edges
 
@@ -41,60 +29,29 @@ class Graph(object):
         edges = [[v, u[0]] for v in [*self._vertices] for u in self._vertices[v]]
         return edges
 
-    # @edges.setter
-    # def edges(self, graph_dict):
-    #     self._edges = [[self.graph_dict[v], u] for v in [*self.graph_dict] for u in self.graph_dict[v]]
-    #
-    #     self._edges.append()
-    #     return self._edges
 
-# class V(Graph):
-#
-#     def __init__(self, d=1000000, p=None):
-#         self._d = d
-#         self._p = p
-#
-#
-#     @property
-#     def d(self):
-#         return self._d
-#
-#     @d.setter
-#     def d(self, weight):
+def relax(G, u, v, w):
+    """
+    Relaxation technique for edge in the graph.
 
-#         self._d = weight
-#         return self._d
-#
-#
-#     @property
-#     def p(self):
-#         return self._p
-#
-#     @p.setter
-#     def p(self, vert):
-#         self._p = vert
-#         return self._p
-#
-#
-# class Subgraph(object):
-#
-#     def add_vert(self):
-#         pass
-#
-#     def add_edge(self):
-#         pass
+    Note (for use Priority Queue method):
+    It can be done with PriorQueue.heap_decrease_key method,
+    but need addition indices-array (with positions where Q.d[i] in Q.array).
+    It's not efficient for memory used, but in the case can replace Q.build_min_heap() in general function 'dijkstra'
+    to Q.heap_decrease_key in sub-function Dijkstra 'relax'.
+    But in time-complexity it will faster.
 
-# def relax(u, v, w):
-#     if v.d > u.d + w[f"{u}, {v}"]:
-#         v.d = u.d + w[f"{u}, {v}"]
-#         v.p = u
+    Parameters
+    ----------
+    G -- graph
+    u -- start-vertex
+    v -- finish-vertex
+    w -- weights-dict (have weight for edge (u, v))
 
-# def relax(G, u, v, w):
-#     if G.d[v[0]] > G.d[u] + w[f"{u}, {v[0]}"]:
-#         G.d[v[0]] = G.d[u] + w[f"{u}, {v[0]}"]
-#         G.p[v[0]] = u
-
-def relax_heap(G, u, v, w):
+    Returns
+    -------
+    None. Just treat G.d[v] and G.p[v] in the graph.
+    """
     if G.d[v[0]] > G.d[u] + w[f"{u}, {v[0]}"]:
         G.d[v[0]] = G.d[u] + w[f"{u}, {v[0]}"]
         G.p[v[0]] = u
@@ -107,20 +64,13 @@ def initialize_single_sourse(G, s):
         G.p[v] = None
     G.d[s] = 0
 
-# def dict_to_heap(dct:dict):
-#     reversed_dict = {val:key for key, val in dct.items()}
-#     weights = Prior_queue([*reversed_dict], "min")
-#     Q = {reversed_dict[i]:i for i in weights.array}
-#     return
 
 Q = 0
 def dijkstra(G, s):
     global Q
     initialize_single_sourse(G, s)
     S = []
-    # ================ CURRENT ZONE: ==============
-    Q = PriorQueue(G.d, "min") # Prior_queue([*G.vertices])  # if it will be list of objects G.d[i] that can be done
-    # =============================================
+    Q = PriorQueue(G.d, "min")
     # Q.heap_size += 1
     while Q.array:
         Q.build_min_heap()  # there is O(m*lg(n)) cost
@@ -138,9 +88,7 @@ if __name__ == "__main__":
     data = [line.split() for line in io.open("task2_dijkstraData.txt").readlines()]
     data = {int(line[0]): [list(map(int, elem.split(","))) for elem in line[1:]] for line in data}
 
-    # d1 = data[1]
     G = Graph(data)
     distances = dijkstra(G, 1)
     result = [G.d[v] for v in [7, 37, 59, 82, 99, 115, 133, 165, 188, 197]]
     print(result)
-    # G.edges
