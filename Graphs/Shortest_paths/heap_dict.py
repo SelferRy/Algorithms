@@ -100,12 +100,13 @@ class PriorQueue(Heap):
         return min
 
     @staticmethod
-    def heap_increase_key(arr_pointers, dict_val, i, key):
-        if key < dict_val[arr_pointers[i]]:
+    def heap_increase_key(prior_queue, i, key):
+        if key < prior_queue.d[prior_queue.array[i]]:
             raise ValueError("new key is smaller than current key")
-        dict_val[arr_pointers[i]] = key
-        while i > 0 and dict_val[arr_pointers[Heap.parent(i)]] < dict_val[arr_pointers[i]]:
-            arr_pointers[i], arr_pointers[Heap.parent(i)] = arr_pointers[Heap.parent(i)], arr_pointers[i]
+        prior_queue.d[prior_queue.array[i]] = key
+        while i > 0 and prior_queue.d[prior_queue.array[Heap.parent(i)]] < prior_queue.d[prior_queue.array[i]]:
+            prior_queue.array[i], prior_queue.array[Heap.parent(i)] \
+                = prior_queue.array[Heap.parent(i)], prior_queue.array[i]
             i = Heap.parent(i)
 
     def heap_decrease_key(self, i, key):
@@ -117,10 +118,12 @@ class PriorQueue(Heap):
             i = self.parent(i)
 
     @staticmethod
-    def max_heap_insert(arr_pointers, dict_val, key, val):
-        arr_pointers.append((key, float('-inf')))
-        heap_size = len(arr_pointers) - 1
-        PriorQueue.heap_increase_key(arr_pointers, dict_val, heap_size, val)
+    def max_heap_insert(prior_queue, key, val):
+        # arr_pointers, dict_val = prior_queue.array, prior_queue.d
+        prior_queue.array.append(key)
+        prior_queue.d[key] = float('-inf')
+        heap_size = len(prior_queue.array) - 1
+        prior_queue.heap_increase_key(prior_queue, heap_size, val)
 
     def min_heap_insert(self, key, val):
         self.array.append((key, float('inf')))
@@ -195,7 +198,7 @@ if __name__ == "__main__":
     b2.build_max_heap()
     print("Max-Heap:", b2.array)
     print("Max-Heap:", [b2.d[key] for key in b2.array])
-    b2.max_heap_insert(b2.array, b2.d, "Max-Heap_insert", 700) #  ("Max-Heap_insert", 700)
+    b2.max_heap_insert(b2, "Max-Heap_insert", 700) #  ("Max-Heap_insert", 700)
     print(f"After insert {700}:", b2.array)
     print(f"After insert {700}:", [b2.d[key] for key in b2.array])
     # b2.build_min_heap()
