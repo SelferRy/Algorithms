@@ -83,7 +83,6 @@ def dijkstra(G, s):
     global Q
     initialize_single_sourse(G, s)
     Q = PriorQueue({s: G.d[s]}, "min")
-    Q.heap_size = 0
     while Q.array:
         u = Q.heap_extract_min()
         for v in G.vertices[u]:
