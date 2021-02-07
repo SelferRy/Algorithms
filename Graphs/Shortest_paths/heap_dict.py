@@ -100,46 +100,40 @@ class PriorQueue(Heap):
         self.min_heapify(0)
         return min
 
-    @staticmethod
-    def heap_increase_key(prior_queue, i, key):
-        if key < prior_queue.d[prior_queue.array[i]]:
+    def heap_increase_key(self, i, key):
+        if key < self.d[self.array[i]]:
             raise ValueError("new key is smaller than current key")
-        prior_queue.d[prior_queue.array[i]] = key
-        while i > 0 and prior_queue.d[prior_queue.array[Heap.parent(i)]] < prior_queue.d[prior_queue.array[i]]:
-            prior_queue.array[i], prior_queue.array[Heap.parent(i)] \
-                = prior_queue.array[Heap.parent(i)], prior_queue.array[i]
+        self.d[self.array[i]] = key
+        while i > 0 and self.d[self.array[Heap.parent(i)]] < self.d[self.array[i]]:
+            self.array[i], self.array[Heap.parent(i)] = self.array[Heap.parent(i)], self.array[i]
             i = Heap.parent(i)
 
-    @staticmethod
-    def heap_decrease_key(prior_queue, i, key):
-        if key > prior_queue.d[prior_queue.array[i]]:
+    def heap_decrease_key(self, i, key):
+        if key > self.d[self.array[i]]:
             pass  # raise ValueError("new key is bigger than current key")
-        prior_queue.d[prior_queue.array[i]] = key
-        while i > 0 and prior_queue.d[prior_queue.array[Heap.parent(i)]] > prior_queue.d[prior_queue.array[i]]:
-            prior_queue.array[i], prior_queue.array[Heap.parent(i)] \
-                = prior_queue.array[Heap.parent(i)], prior_queue.array[i]
+        self.d[self.array[i]] = key
+        while i > 0 and self.d[self.array[Heap.parent(i)]] > self.d[self.array[i]]:
+            self.array[i], self.array[Heap.parent(i)] = self.array[Heap.parent(i)], self.array[i]
             i = Heap.parent(i)
 
-    @staticmethod
-    def max_heap_insert(prior_queue, key, val):
+    def max_heap_insert(self, key, val):
         """
         The part not use in Dijkstra now and not done.
         In previous version it was like 'min_heap_insert' method and worked.
         Now it's work, but not integrated in Dijkstra.
         """
-        prior_queue.array.append(key)
-        prior_queue.d[key] = float('-inf')
-        heap_size = len(prior_queue.array) - 1
-        prior_queue.heap_increase_key(prior_queue, heap_size, val)
-        prior_queue.heap_size += 1
+        self.array.append(key)
+        self.d[key] = float('-inf')
+        heap_size = len(self.array) - 1
+        self.heap_increase_key(heap_size, val)
+        self.heap_size += 1
 
-    @staticmethod
-    def min_heap_insert(prior_queue, key, val):
-        prior_queue.array.append(key)
-        prior_queue.d[key] = float('inf')
-        heap_size = prior_queue.heap_size # len(prior_queue.array) - 1
-        prior_queue.heap_decrease_key(prior_queue, heap_size, val)
-        prior_queue.heap_size += 1
+    def min_heap_insert(self, key, val):
+        self.array.append(key)
+        self.d[key] = float('inf')
+        heap_size = self.heap_size # len(self.array) - 1
+        self.heap_decrease_key(heap_size, val)
+        self.heap_size += 1
 
 
 if __name__ == "__main__":
@@ -191,7 +185,7 @@ if __name__ == "__main__":
     b2.build_max_heap()
     print("Max-Heap:", b2.array)
     print("Max-Heap:", [b2.d[key] for key in b2.array])
-    b2.max_heap_insert(b2, "Max-Heap_insert", 700) #  ("Max-Heap_insert", 700)
+    b2.max_heap_insert("Max-Heap_insert", 700) #  ("Max-Heap_insert", 700)
     print(f"After insert {700}:", b2.array)
     print(f"After insert {700}:", [b2.d[key] for key in b2.array])
     # b2.build_min_heap()
