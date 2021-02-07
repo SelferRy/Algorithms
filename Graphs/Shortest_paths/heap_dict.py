@@ -56,6 +56,8 @@ class Heap(object):
             self.max_heapify(largest)
 
     def min_heapify(self, i):
+        if not self.array:
+            return None
         l = self.left(i)
         r = self.right(i)
         if l <= self.heap_size and self.d[self.array[l]] < self.d[self.array[i]]:
@@ -112,7 +114,8 @@ class PriorQueue(Heap):
     @staticmethod
     def heap_decrease_key(prior_queue, i, key):
         if key > prior_queue.d[prior_queue.array[i]]:
-            raise ValueError("new key is bigger than current key")
+            pass
+            # raise ValueError("new key is bigger than current key")
         prior_queue.d[prior_queue.array[i]] = key
         while i > 0 and prior_queue.d[prior_queue.array[Heap.parent(i)]] > prior_queue.d[prior_queue.array[i]]:
             prior_queue.array[i], prior_queue.array[Heap.parent(i)] \

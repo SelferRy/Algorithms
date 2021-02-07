@@ -60,7 +60,7 @@ def relax(G, u, v, w, Q):
     if G.d[v[0]] > G.d[u] + w[f"{u}, {v[0]}"]:
         G.d[v[0]] = G.d[u] + w[f"{u}, {v[0]}"]
         G.p[v[0]] = u
-    PriorQueue.min_heap_insert(Q, v[0], G.d[v[0]])
+        PriorQueue.min_heap_insert(Q, v[0], G.d[v[0]])
 
 
 def initialize_single_sourse(G, s):
@@ -82,14 +82,15 @@ def dijkstra(G, s):
     """
     global Q
     initialize_single_sourse(G, s)
-    S = []
+    # S = []
     Q = PriorQueue({s: G.d[s]}, "min")
+    Q.heap_size = 0
     while Q.array:
         u = Q.heap_extract_min()
-        S.append([u, G.d[u]])
+        # S.append([u, G.d[u]])
         for v in G.vertices[u]:
             relax(G, u, v, w=G.weights, Q=Q)
-    return S
+    # return S
 
 if __name__ == "__main__":
     # ==================================== Exam-case =============================================
