@@ -11,7 +11,6 @@ class Heap(object):
         self.d = distances
         if isinstance(distances, dict):
             self.array = [*distances]
-        # self.array = distances
         self._hs = None
         if key == "min":
             self.build_min_heap()
@@ -114,23 +113,12 @@ class PriorQueue(Heap):
     @staticmethod
     def heap_decrease_key(prior_queue, i, key):
         if key > prior_queue.d[prior_queue.array[i]]:
-            pass
-            # raise ValueError("new key is bigger than current key")
+            pass  # raise ValueError("new key is bigger than current key")
         prior_queue.d[prior_queue.array[i]] = key
         while i > 0 and prior_queue.d[prior_queue.array[Heap.parent(i)]] > prior_queue.d[prior_queue.array[i]]:
             prior_queue.array[i], prior_queue.array[Heap.parent(i)] \
                 = prior_queue.array[Heap.parent(i)], prior_queue.array[i]
             i = Heap.parent(i)
-
-    # def heap_decrease_key(self, i, key):
-    #     """ Now it's not done. """
-    #     if key > self.array[i][1]:
-    #         raise ValueError("new key is larger than current key")
-    #     self.array[i] = key
-    #     while i > 0 and self.d[self.array[self.parent(i)]] > self.d[self.array[i]]:
-    #         self.array[i], self.array[self.parent(i)] = self.array[self.parent(i)], self.array[i]
-    #         i = self.parent(i)
-
 
     @staticmethod
     def max_heap_insert(prior_queue, key, val):
@@ -152,11 +140,6 @@ class PriorQueue(Heap):
         heap_size = prior_queue.heap_size # len(prior_queue.array) - 1
         prior_queue.heap_decrease_key(prior_queue, heap_size, val)
         prior_queue.heap_size += 1
-
-    # def min_heap_insert(self, key, val):
-    #     """ Now it's not done. """
-    #     self.array.append((key, float('inf')))
-    #     self.heap_decrease_key(self.heap_size, val)
 
 
 if __name__ == "__main__":

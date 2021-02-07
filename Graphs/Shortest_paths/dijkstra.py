@@ -82,15 +82,12 @@ def dijkstra(G, s):
     """
     global Q
     initialize_single_sourse(G, s)
-    # S = []
     Q = PriorQueue({s: G.d[s]}, "min")
     Q.heap_size = 0
     while Q.array:
         u = Q.heap_extract_min()
-        # S.append([u, G.d[u]])
         for v in G.vertices[u]:
             relax(G, u, v, w=G.weights, Q=Q)
-    # return S
 
 if __name__ == "__main__":
     # ==================================== Exam-case =============================================
