@@ -55,8 +55,6 @@ class Heap(object):
             self.max_heapify(largest)
 
     def min_heapify(self, i):
-        # if not self.array:
-        #     pass  # return None
         l = self.left(i)
         r = self.right(i)
         if l <= self.heap_size and self.d[self.array[l]] < self.d[self.array[i]]:
