@@ -71,7 +71,6 @@ def initialize_single_sourse(G, s):
     G.d[s] = 0
 
 
-Q = 0
 def dijkstra(G, s):
     """
     Parameters
@@ -80,7 +79,6 @@ def dijkstra(G, s):
     s -- source vertex name
 
     """
-    global Q
     initialize_single_sourse(G, s)
     Q = PriorQueue({s: G.d[s]}, "min")
     while Q.array:
