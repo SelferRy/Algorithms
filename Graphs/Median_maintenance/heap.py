@@ -72,7 +72,7 @@ class Heap(object):
             self.min_heapify(i)
 
 
-class Prior_queue(Heap):
+class PriorQueue(Heap):
 
     def heap_extract_max(self):
         if self.heap_size < 0:  # < 1:
@@ -157,6 +157,6 @@ if __name__ == "__main__":
     print(c, f"\n\theap_size = {c.heap_size + 1}", f"length = {len(c.array)}")
     c.min_heap_insert(1)
     print(c, f"\n\theap_size = {c.heap_size + 1}", f"length = {len(c.array)}")
-    for i in range(c.heap_size):
+    for i in range(c.heap_size - 10):
         print(c.heap_extract_min())
     print(c)
