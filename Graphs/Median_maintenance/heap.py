@@ -17,10 +17,10 @@ class Heap(object):
         return (i - 1) // 2
 
     def left(self, i):
-        return 2*i + 1
+        return 2 * i + 1
 
     def right(self, i):
-        return 2*i + 2
+        return 2 * i + 2
 
     @property
     def heap_size(self):
@@ -33,7 +33,6 @@ class Heap(object):
     def heap_size(self, i):
         self._hs = i
         return self._hs
-
 
     def max_heapify(self, i):
         l = self.left(i)
@@ -63,12 +62,12 @@ class Heap(object):
 
     def build_max_heap(self):
         self.heap_size = len(self.array) - 1
-        for i in range(len(self.array)//2 - 1, -1, -1):
+        for i in range(len(self.array) // 2 - 1, -1, -1):
             self.max_heapify(i)
 
     def build_min_heap(self):
         self.heap_size = len(self.array) - 1
-        for i in reversed(range(len(self.array)//2)):
+        for i in reversed(range(len(self.array) // 2)):
             self.min_heapify(i)
 
 
@@ -78,19 +77,25 @@ class PriorQueue(Heap):
         if self.heap_size < 0:  # < 1:
             raise IndexError("The queue is empty.")
         max = self.array[0]
-        self.array[0] = self.array[self.heap_size]
-        self.heap_size -= 1
-        self.max_heapify(0)
+        if self.heap_size == 0:
+            self.array.pop()
+        else:
+            self.array[0] = self.array[self.heap_size]
+            self.heap_size -= 1
+            self.max_heapify(0)
         return max
-    
+
     def heap_extract_min(self):
         if self.heap_size < 0:  # 1:
             raise IndexError("The queue is empty.")
         min = self.array[0]
-        self.array[0] = self.array[self.heap_size]
-        self.heap_size -= 1
-        self.array.pop()
-        self.min_heapify(0)
+        if self.heap_size == 0:
+            self.array.pop()
+        else:
+            self.array[0] = self.array[self.heap_size]  # self.array.pop()
+            self.heap_size -= 1
+            self.array.pop()
+            self.min_heapify(0)
         return min
 
     def heap_increase_key(self, i, key):
@@ -126,7 +131,6 @@ if __name__ == "__main__":
     print(A.array)
     A.build_min_heap()
     print(A.array)
-
 
     a2 = Heap([500, 400, 200, 100, 150, 1, 10])
     a2.build_max_heap()
