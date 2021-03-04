@@ -37,11 +37,11 @@ class Heap(object):
     def max_heapify(self, i):
         l = self.left(i)
         r = self.right(i)
-        if l < self.heap_size and self.array[l] > self.array[i]:
+        if l <= self.heap_size and self.array[l] > self.array[i]:
             largest = l
         else:
             largest = i
-        if r < self.heap_size and self.array[r] > self.array[largest]:
+        if r <= self.heap_size and self.array[r] > self.array[largest]:
             largest = r
         if largest != i:
             self.array[i], self.array[largest] = self.array[largest], self.array[i]
@@ -77,12 +77,10 @@ class PriorQueue(Heap):
         if self.heap_size < 0:  # < 1:
             raise IndexError("The queue is empty.")
         max = self.array[0]
-        if self.heap_size == 0:
-            self.array.pop()
-        else:
-            self.array[0] = self.array[self.heap_size]
-            self.heap_size -= 1
-            self.max_heapify(0)
+        self.array[0] = self.array[self.heap_size]
+        self.heap_size -= 1
+        self.array.pop()
+        self.max_heapify(0)
         return max
 
     def heap_extract_min(self):
