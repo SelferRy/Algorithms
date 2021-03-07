@@ -214,7 +214,7 @@ if __name__ == "__main__":
     c.build_max_heap()
     print("Max-Heap:", c.array)
     print("Max-Heap:", [c.d[key] for key in c.array])
-    c.max_heap_insert(c, "Max-Heap_insert", 700)
+    c.max_heap_insert("Max-Heap_insert", 700)
     print(f"After insert {700}:", c.array)
     print(f"After insert {700}:", [c.d[key] for key in c.array])
     test = PriorQueue({"a": 1, "b": 2}, "min")
