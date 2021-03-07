@@ -17,16 +17,16 @@ class Heap(object):
         if key == "max":
             self.build_max_heap()
 
-    @staticmethod
-    def parent(i):
+    @classmethod
+    def parent(cls, i):
         return (i - 1) // 2
 
-    @staticmethod
-    def left(i):
+    @classmethod
+    def left(cls, i):
         return 2 * i + 1
 
-    @staticmethod
-    def right(i):
+    @classmethod
+    def right(cls, i):
         return 2 * i + 2
 
     @property
