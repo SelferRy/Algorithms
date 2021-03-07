@@ -90,14 +90,6 @@ def dfs(graph, i):
             # for get f-times order:
             graph.f.appendleft(v)
 
-    # graph.explored = i              # mark as explored the vertex
-    # graph.leader = (graph.s, i)     # collect vertex in leader[s]-list
-    # for j in graph.vertices[i]:     # for each arc in (i,j) in G
-    #     if not graph.explored[j]:
-    #         dfs(graph, j)
-    # graph.f.appendleft(i)           # [n, ..., t, ..., 1] - finishing-time stack for second dfs_loop
-
-
 # %%
 if __name__ == "__main__":
     # ================= Multiple test cases ==================
