@@ -32,7 +32,6 @@ class Heap(object):
     @heap_size.setter
     def heap_size(self, i):
         self._hs = i
-        return self._hs
 
     def max_heapify(self, i):
         l = self.left(i)
@@ -136,7 +135,7 @@ if __name__ == "__main__":
     a2.build_min_heap()
     print(a2.array)
 
-    B = Prior_queue([10, 50, 3, 8, 2])
+    B = PriorQueue([10, 50, 3, 8, 2])
     B.build_min_heap()
     print("\tB-heap:\n", B.array)
     print(B.heap_extract_min())
@@ -146,7 +145,7 @@ if __name__ == "__main__":
     B.min_heap_insert(4)
     print("after insertion 4 to heap B:", B.array)
 
-    b2 = Prior_queue([500, 400, 200, 100, 150, 1, 10])
+    b2 = PriorQueue([500, 400, 200, 100, 150, 1, 10])
     b2.build_min_heap()
     print("\tb2-heap:\n", b2.array)
     print(b2.heap_extract_min())
@@ -155,7 +154,7 @@ if __name__ == "__main__":
     print("after insertion 600 to heap b2:", b2.array)
 
     c = list(range(15, 1, -1))
-    c = Prior_queue(c, 'min')
+    c = PriorQueue(c, 'min')
     print(c, f"\n\theap_size = {c.heap_size + 1}", f"length = {len(c.array)}")
     c.min_heap_insert(1)
     print(c, f"\n\theap_size = {c.heap_size + 1}", f"length = {len(c.array)}")
