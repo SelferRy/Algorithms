@@ -1,4 +1,6 @@
 # %%
+# This is recursive version of Strongly Connected Components on vertices contains in data.
+# (without all vertices from 1 to len(array))
 
 from collections import deque
 import io

@@ -1,4 +1,5 @@
 # %%
+# This is iterative version of Strongly Connected Components.
 
 from collections import deque
 import numpy as np
