@@ -92,7 +92,6 @@ if __name__ == "__main__":
     data = [line.split() for line in io.open("task2_dijkstraData.txt").readlines()]
     data = {int(line[0]): [list(map(int, elem.split(","))) for elem in line[1:]] for line in data}
 
-    G = Graph(data)
-    dijkstra(G, 1)
+    G = Graph(data)    dijkstra(G, 1)
     result = [G.d[v] for v in [7, 37, 59, 82, 99, 115, 133, 165, 188, 197]]
     print(result)
