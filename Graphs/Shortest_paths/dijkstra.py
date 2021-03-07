@@ -77,7 +77,6 @@ def dijkstra(G, s):
     ----------
     G -- graph
     s -- source vertex name
-
     """
     initialize_single_sourse(G, s)
     Q = PriorQueue({s: G.d[s]}, "min")

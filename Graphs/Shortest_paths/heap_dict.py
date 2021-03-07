@@ -32,23 +32,22 @@ class Heap(object):
     @property
     def heap_size(self):
         if self._hs == None:
-            self.heap_size = len(self.array) - 1
+            self.heap_size = len(self.array)
         return self._hs
 
     @heap_size.setter
     def heap_size(self, i):
         self._hs = i
-        return self._hs
 
     def max_heapify(self, i):
         """ self.array[i] - it is key of vertex. """
         l = self.left(i)
         r = self.right(i)
-        if l <= self.heap_size and self.d[self.array[l]] > self.d[self.array[i]]:
+        if l < self.heap_size and self.d[self.array[l]] > self.d[self.array[i]]:
             largest = l
         else:
             largest = i
-        if r <= self.heap_size and self.d[self.array[r]] > self.d[self.array[largest]]:
+        if r < self.heap_size and self.d[self.array[r]] > self.d[self.array[largest]]:
             largest = r
         if largest != i:
             self.array[i], self.array[largest] = self.array[largest], self.array[i]
@@ -57,11 +56,11 @@ class Heap(object):
     def min_heapify(self, i):
         l = self.left(i)
         r = self.right(i)
-        if l <= self.heap_size and self.d[self.array[l]] < self.d[self.array[i]]:
+        if l < self.heap_size and self.d[self.array[l]] < self.d[self.array[i]]:
             smallest = l
         else:
             smallest = i
-        if r <= self.heap_size and self.d[self.array[r]] < self.d[self.array[smallest]]:
+        if r < self.heap_size and self.d[self.array[r]] < self.d[self.array[smallest]]:
             smallest = r
         if smallest != i:
             self.array[i], self.array[smallest] = self.array[smallest], self.array[i]
@@ -79,20 +78,20 @@ class Heap(object):
 class PriorQueue(Heap):
 
     def heap_extract_max(self):
-        if self.heap_size < 0:  # < 1:
+        if self.heap_size < 1:
             raise IndexError("The queue is empty.")
         max = self.array[0]
-        self.array[0] = self.array[self.heap_size]
+        self.array[0] = self.array[self.heap_size - 1]
         self.array.pop()
         self.heap_size -= 1
         self.max_heapify(0)
         return max
 
     def heap_extract_min(self):
-        if self.heap_size < 0:  # < 1:
+        if self.heap_size < 1:
             raise IndexError("The queue is empty.")
         min = self.array[0]
-        self.array[0] = self.array[self.heap_size]
+        self.array[0] = self.array[self.heap_size - 1]
         self.array.pop()
         self.heap_size -= 1
         self.min_heapify(0)
@@ -120,18 +119,17 @@ class PriorQueue(Heap):
         In previous version it was like 'min_heap_insert' method and worked.
         Now it's work, but not integrated in Dijkstra.
         """
+        self.heap_size += 1
         self.array.append(key)
         self.d[key] = float('-inf')
-        heap_size = len(self.array) - 1
-        self.heap_increase_key(heap_size, val)
-        self.heap_size += 1
+        self.heap_increase_key(self.heap_size - 1, val)
+
 
     def min_heap_insert(self, key, val):
+        self.heap_size += 1
         self.array.append(key)
         self.d[key] = float('inf')
-        heap_size = self.heap_size # len(self.array) - 1
-        self.heap_decrease_key(heap_size, val)
-        self.heap_size += 1
+        self.heap_decrease_key(self.heap_size - 1, val)
 
 
 if __name__ == "__main__":
