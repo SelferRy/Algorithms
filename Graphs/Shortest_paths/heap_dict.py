@@ -67,11 +67,11 @@ class Heap(object):
             self.min_heapify(smallest)
 
     def build_max_heap(self):
-        for i in range(len(self.array) // 2 - 1, -1, -1):  # range(len(self.array)//2 - 1, -1, -1):
+        for i in range(len(self.array) // 2 - 1, -1, -1):
             self.max_heapify(i)
 
     def build_min_heap(self):
-        for i in range(len(self.array) // 2 - 1, -1, -1):  # reversed(range(len(self.array)//2)):
+        for i in range(len(self.array) // 2 - 1, -1, -1):
             self.min_heapify(i)
 
 
