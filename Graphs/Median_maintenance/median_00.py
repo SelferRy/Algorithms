@@ -1,6 +1,3 @@
-# import get_heap
-# get_heap.graphs_dir()
-# from Shortest_paths.heap_dict import Heap, PriorQueue
 from heap import PriorQueue
 
 
@@ -122,7 +119,6 @@ if __name__ == "__main__":
 
     # Test-cases from forum:
     arr = [1, 666, 10, 667, 100, 2, 3]
-    #arr = MultiHeaps(arr)
     medians1 = median_loop(arr)
     ans = sum(medians1) % 10000
     print(ans)

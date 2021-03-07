@@ -10,7 +10,6 @@ class Heap(object):
 
     def __repr__(self):
         line = ", ".join([str(i) for i in self.array])
-        # line += "\n\theap_size = {0}".format(self.heap_size)
         return line
 
     def parent(self, i):
@@ -26,7 +25,7 @@ class Heap(object):
     def heap_size(self):
         """ self.heap_size -- is final index of heap-array."""
         if self._hs == None:
-            self.heap_size = len(self.array) - 1
+            self.heap_size = len(self.array)
         return self._hs
 
     @heap_size.setter
@@ -36,11 +35,11 @@ class Heap(object):
     def max_heapify(self, i):
         l = self.left(i)
         r = self.right(i)
-        if l <= self.heap_size and self.array[l] > self.array[i]:
+        if l < self.heap_size and self.array[l] > self.array[i]:
             largest = l
         else:
             largest = i
-        if r <= self.heap_size and self.array[r] > self.array[largest]:
+        if r < self.heap_size and self.array[r] > self.array[largest]:
             largest = r
         if largest != i:
             self.array[i], self.array[largest] = self.array[largest], self.array[i]
@@ -49,23 +48,23 @@ class Heap(object):
     def min_heapify(self, i):
         l = self.left(i)
         r = self.right(i)
-        if l <= self.heap_size and self.array[l] < self.array[i]:
+        if l < self.heap_size and self.array[l] < self.array[i]:
             smallest = l
         else:
             smallest = i
-        if r <= self.heap_size and self.array[r] < self.array[smallest]:
+        if r < self.heap_size and self.array[r] < self.array[smallest]:
             smallest = r
         if smallest != i:
             self.array[i], self.array[smallest] = self.array[smallest], self.array[i]
             self.min_heapify(smallest)
 
     def build_max_heap(self):
-        self.heap_size = len(self.array) - 1
+        self.heap_size = len(self.array)
         for i in range(len(self.array) // 2 - 1, -1, -1):
             self.max_heapify(i)
 
     def build_min_heap(self):
-        self.heap_size = len(self.array) - 1
+        self.heap_size = len(self.array)
         for i in reversed(range(len(self.array) // 2)):
             self.min_heapify(i)
 
@@ -73,26 +72,23 @@ class Heap(object):
 class PriorQueue(Heap):
 
     def heap_extract_max(self):
-        if self.heap_size < 0:  # < 1:
+        if self.heap_size < 1:
             raise IndexError("The queue is empty.")
         max = self.array[0]
-        self.array[0] = self.array[self.heap_size]
+        self.array[0] = self.array[self.heap_size - 1]
         self.heap_size -= 1
         self.array.pop()
         self.max_heapify(0)
         return max
 
     def heap_extract_min(self):
-        if self.heap_size < 0:  # 1:
+        if self.heap_size < 1:
             raise IndexError("The queue is empty.")
         min = self.array[0]
-        if self.heap_size == 0:
-            self.array.pop()
-        else:
-            self.array[0] = self.array[self.heap_size]  # self.array.pop()
-            self.heap_size -= 1
-            self.array.pop()
-            self.min_heapify(0)
+        self.array[0] = self.array[self.heap_size - 1]  # self.array.pop()
+        self.heap_size -= 1
+        self.array.pop()
+        self.min_heapify(0)
         return min
 
     def heap_increase_key(self, i, key):
@@ -112,14 +108,14 @@ class PriorQueue(Heap):
             i = self.parent(i)
 
     def max_heap_insert(self, key):
-        self.heap_size += 1  # len(self.array) - 1
+        self.heap_size += 1
         self.array.append(float('-inf'))
-        self.heap_increase_key(self.heap_size, key)
+        self.heap_increase_key(self.heap_size - 1, key)
 
     def min_heap_insert(self, key):
-        self.heap_size += 1  # len(self.array) - 1
+        self.heap_size += 1
         self.array.append(float('inf'))
-        self.heap_decrease_key(self.heap_size, key)
+        self.heap_decrease_key(self.heap_size - 1, key)
 
 
 if __name__ == "__main__":
