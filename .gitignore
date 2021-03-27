@@ -3,3 +3,5 @@ __pycache__/
 Drafts/
 .ipynb_checkpoints/
 /Graphs/Strongly_Connected_Components/Test.ipynb
+/Two_sum/ans.txt
+/Two_sum/hashtable.py
