@@ -25,10 +25,13 @@ def main():
 
     count = 0
     for i, t in enumerate(range(-10000, 10001)):
-        if i % 2000:
-            print("Still work")
+        # if i % 2000:
+        #     print("Still work")
         if TwoSum_HashTable(data, t):
             count += 1
+
+        if t % 100 == 0:
+            print(t, f"count = {count}")
     print('Via hash table: ' + str(count))
 
 if __name__ == "__main__":
