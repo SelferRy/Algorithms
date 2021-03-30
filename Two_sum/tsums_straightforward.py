@@ -1,3 +1,5 @@
+# 'straightforward'-version of 2-sum
+
 def twosum_hashtable(t):
     global array
     global hashtable
@@ -8,7 +10,7 @@ def twosum_hashtable(t):
 
 
 if __name__ == "__main__":
-    file = open("task3_2sum.txt", "r")
+    file = open("data_2sum.txt", "r")
     array = file.read().split("\n")
     array = list(map(int, array[:-1]))
     hashtable = {x: True for x in array}

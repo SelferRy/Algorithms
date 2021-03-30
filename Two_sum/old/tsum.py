@@ -1,3 +1,5 @@
+# 'straightforward'-version of 2-sum
+
 def TwoSum_HashTable(lst, hashTable, target):
     """
     2-SUM algorithm via hash table.
@@ -11,7 +13,7 @@ def TwoSum_HashTable(lst, hashTable, target):
 
 
 if __name__ == "__main__":
-    file = open("task3_2sum.txt", "r")
+    file = open("../data_2sum.txt", "r")
     data = file.read().split("\n")  # # file.readlines() # [line.split("\n") for line in file.readlines()]
     data = list(map(int, data[:-1]))
     hashtable = {x: True for x in data}
