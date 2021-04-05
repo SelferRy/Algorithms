@@ -46,7 +46,7 @@ def two_sum(data, hashtable, c=10000):
 
 if __name__ == "__main__":
     start_time = time.time()
-    file = open("data_2sum.txt", "r")
+    file = open("../data_2sum.txt", "r")
     data = file.read().split("\n")  # # file.readlines() # [line.split("\n") for line in file.readlines()]
     data = list(map(int, data[:-1]))
     hashtable = Hashtable(data)
